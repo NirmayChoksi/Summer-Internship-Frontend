@@ -1,0 +1,21 @@
+@for $i from 0 through 50 {
+  .br-#{$i} {
+    border-radius: #{$i}px;
+  }
+
+  .br-tl-#{$i} {
+    border-top-left-radius: #{$i}px;
+  }
+
+  .br-tr-#{$i} {
+    border-top-right-radius: #{$i}px;
+  }
+
+  .br-bl-#{$i} {
+    border-bottom-left-radius: #{$i}px;
+  }
+
+  .br-br-#{$i} {
+    border-bottom-right-radius: #{$i}px;
+  }
+}

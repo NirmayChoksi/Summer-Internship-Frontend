@@ -1,0 +1,32 @@
+<div class="form-input">
+  @if (label()) {
+    <ion-label>
+      {{ label() }}
+      @if (isRequired()) {
+        <span aria-hidden="true"> *</span>
+      }
+    </ion-label>
+  }
+
+  <ion-input
+    (ionBlur)="onBlur()"
+    (ionInput)="onInput($event)"
+    [class.error]="hasError()"
+    [disabled]="isDisabled()"
+    [inputmode]="inputMode()"
+    [placeholder]="placeholder()"
+    [type]="type()"
+    [value]="value()"
+  >
+    @if (type() === 'password') {
+      <ion-input-password-toggle slot="end" />
+    }
+  </ion-input>
+
+  @if (hasError()) {
+    <ion-note color="danger">
+      <ion-icon name="alert-circle-outline" />
+      {{ errorMessage() }}
+    </ion-note>
+  }
+</div>

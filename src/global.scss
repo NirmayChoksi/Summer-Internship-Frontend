@@ -34,4 +34,14 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+// @import '@ionic/angular/css/palettes/dark.system.css';
+
+@import url("./theme/border-radius.scss");
+@import url("./theme/flex.scss");
+@import url("./theme/font.scss");
+@import url("./theme/form.scss");
+@import url("./theme/gap.scss");
+@import url("./theme/height.scss");
+@import url("./theme/margin.scss");
+@import url("./theme/padding.scss");
+@import url("./theme/width.scss");

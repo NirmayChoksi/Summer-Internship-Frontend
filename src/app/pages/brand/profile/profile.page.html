@@ -1,0 +1,54 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      {{ isEditMode ? 'Edit Profile' : 'Create Profile' }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="ion-flex-column gap-24">
+    <div class="ion-flex-column gap-16">
+      <ion-label color="medium"> Company Information </ion-label>
+      <app-file-upload
+        label="Upload company logo"
+        [accept]="['.png', '.jpg', '.jpeg']"
+        [fileUrl]="profileForm.get('companyLogo')?.value"
+        (filesChange)="onCompanyLogoUpload($event)"
+        (urlRemoved)="onCompanyLogoRemoved($event)"
+      />
+      <app-input label="Company Name" formControlName="companyName" />
+      <app-text-area label="Description" formControlName="description" />
+      <app-input label="Website" formControlName="website" placeholder="https://..." type="url" inputMode="url" />
+      <app-select [options]="industryOptions" label="Industry" formControlName="industry" />
+    </div>
+
+    <div class="ion-flex-column gap-12">
+      <ion-label color="medium"> Budget </ion-label>
+
+      <div formGroupName="budget" class="ion-flex-row gap-16">
+        <app-input class="wp-100" label="Minimum" type="number" formControlName="min" />
+        <app-input class="wp-100" label="Maximum" type="number" formControlName="max" />
+      </div>
+
+      @if (profileForm.get('budget')?.errors?.['invalidBudget'] && profileForm.get('budget')?.touched) {
+        <ion-note color="danger" class="fs-12 ion-flex-row gap-5 ion-align-items-center">
+          <ion-icon name="alert-circle-outline" class="fs-14" />
+          Maximum budget must be greater than minimum budget
+        </ion-note>
+      }
+    </div>
+
+    <div class="ion-flex-column gap-12">
+      <ion-label color="medium"> Contact Information </ion-label>
+      <div class="ion-flex-row gap-16">
+        <app-input class="wp-100" label="First Name" formControlName="firstName" />
+        <app-input class="wp-100" label="Last Name" formControlName="lastName" />
+      </div>
+      <app-input label="Contact Number" type="tel" inputMode="tel" formControlName="contactNumber" />
+      <app-input label="Email" formControlName="email" type="email" inputMode="email" />
+    </div>
+
+    <app-button [label]="isEditMode ? 'Update Profile' : 'Create Profile'" type="submit" [loading]="isLoading()" />
+  </form>
+</ion-content>

@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title> Verify OTP </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="verifyOtpForm"
+    class="ion-flex-column gap-16 ion-justify-content-between hp-100"
+  >
+    <div class="ion-flex-column gap-12">
+      <ion-text class="ion-text-center" color="medium"> Enter the 6-digit code sent to your email </ion-text>
+      @if (email) {
+        <ion-text class="ion-text-center fw-600">
+          {{ email }}
+        </ion-text>
+      }
+
+      <ion-input-otp length="6" type="number" formControlName="otp" />
+    </div>
+
+    <div class="ion-flex-column gap-12">
+      <app-button label="Verify OTP" type="submit" [loading]="isSubmitting" />
+
+      <app-button
+        label="Resend OTP"
+        fill="clear"
+        [loading]="isResending"
+        [disabled]="isSubmitting"
+        (click)="resendOtp()"
+      />
+    </div>
+  </form>
+</ion-content>

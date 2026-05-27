@@ -1,0 +1,13 @@
+$font-weights: 100, 200, 300, 400, 500, 600, 700;
+
+@each $weight in $font-weights {
+  .fw-#{$weight} {
+    font-weight: $weight;
+  }
+}
+
+@for $i from 0 through 50 {
+  .fs-#{$i} {
+    font-size: #{$i}px;
+  }
+}

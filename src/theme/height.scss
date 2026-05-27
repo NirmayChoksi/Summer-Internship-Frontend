@@ -1,0 +1,11 @@
+@for $i from 0 through 500 {
+  .h-#{$i} {
+    height: #{$i}px;
+  }
+}
+
+@for $i from 0 through 100 {
+  .hp-#{$i} {
+    height: $i * 1%;
+  }
+}

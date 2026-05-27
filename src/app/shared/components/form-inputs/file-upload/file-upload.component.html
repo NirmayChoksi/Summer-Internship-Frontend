@@ -1,0 +1,97 @@
+<div class="wp-100 ion-flex-column">
+  <div
+    (click)="openFilePicker(fileInput)"
+    (dragleave)="onDragLeave()"
+    (dragover)="onDragOver($event)"
+    (drop)="onDrop($event)"
+    [class.drag-over]="isDragOver()"
+    [class.ion-padding]="!(!multiple() && displayFiles().length && showPreview())"
+    class="dropzone w-150 h-150 ion-flex-column ion-align-items-center ion-justify-content-center ion-align-self-center"
+    role="button"
+    tabindex="0"
+  >
+    @if (!multiple() && displayFiles().length && showPreview()) {
+      @let item = displayFiles()[0];
+
+      <div class="wp-100 hp-100">
+        @if (isImage(item) && item.preview) {
+          <img [src]="item.preview" [alt]="item.name" class="preview-image wp-100 hp-100 br-20" />
+        } @else {
+          <div
+            class="document-preview wp-100 hp-100 ion-flex-column ion-align-items-center ion-justify-content-center gap-10 ion-text-center p-12"
+          >
+            <ion-icon name="document-outline" class="document-icon" color="medium" class="fs-38"></ion-icon>
+            <ion-text>{{ item.name }}</ion-text>
+          </div>
+        }
+      </div>
+    } @else {
+      <ion-icon name="camera-outline" class="fs-28 mb-8" color="medium"></ion-icon>
+
+      <ion-label color="medium" class="fs-14 ion-text-center">
+        {{ label() }}
+      </ion-label>
+    }
+
+    <ion-fab slot="absolute" class="upload-fab">
+      @if (!multiple() && displayFiles().length && showPreview()) {
+        <ion-fab-button size="small" (click)="$event.stopPropagation(); removeFile(0)" color="danger">
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-fab-button>
+      } @else {
+        <ion-fab-button size="small" (click)="$event.stopPropagation(); openFilePicker(fileInput)">
+          <ion-icon name="camera-outline"></ion-icon>
+        </ion-fab-button>
+      }
+    </ion-fab>
+
+    <input
+      #fileInput
+      type="file"
+      class="ion-display-none"
+      [multiple]="multiple()"
+      [accept]="acceptedTypes()"
+      (change)="onFileChange($event)"
+    />
+  </div>
+
+  @if (multiple() && uploadedFiles().length) {
+    <div class="file-list mt-16 ion-flex-column gap-12">
+      @for (item of displayFiles(); track item.name; let i = $index) {
+        <div class="file-item py-10 px-12 br-14 ion-flex-row ion-align-items-center ion-justify-content-between">
+          <div class="file-item-left ion-flex-row ion-align-items-center gap-12 ion-flex-1">
+            @if (item.preview) {
+              <img [src]="item.preview" class="file-thumb w-48 h-48 br-10 ion-flex-shrink-0" [alt]="item.name" />
+            } @else {
+              <div
+                class="doc-thumb w-48 h-48 br-10 ion-flex-row ion-align-items-center ion-justify-content-center fs-24 ion-flex-shrink-0"
+              >
+                <ion-icon name="document-outline"></ion-icon>
+              </div>
+            }
+
+            <span class="file-name fs-14 ion-text-nowrap">
+              {{ item.name }}
+            </span>
+          </div>
+
+          <app-button
+            type="button"
+            fill="ghost"
+            [iconOnly]="true"
+            iconStart="close-outline"
+            (click)="removeFile(i)"
+            color="danger"
+          ></app-button>
+        </div>
+      }
+    </div>
+  }
+
+  @if (errorMessage()) {
+    <ion-note color="danger" class="fs-12 ion-flex-row gap-5 ion-align-items-center mt-8">
+      <ion-icon name="alert-circle-outline" class="fs-14" />
+      {{ errorMessage() }}
+    </ion-note>
+  }
+</div>

@@ -1,0 +1,11 @@
+@for $i from 0 through 500 {
+  .w-#{$i} {
+    width: #{$i}px;
+  }
+}
+
+@for $i from 0 through 100 {
+  .wp-#{$i} {
+    width: $i * 1%;
+  }
+}

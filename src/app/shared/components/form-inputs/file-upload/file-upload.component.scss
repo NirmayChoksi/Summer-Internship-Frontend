@@ -1,0 +1,63 @@
+.dropzone {
+  position: relative;
+
+  border: 2px dashed var(--ion-color-medium);
+  border-radius: 20px;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.dropzone.drag-over {
+  border-color: var(--ion-color-primary);
+  background: rgba(var(--ion-color-primary-rgb), 0.08);
+}
+
+.upload-fab {
+  right: -16px;
+  bottom: -16px;
+}
+
+.preview-image {
+  object-fit: cover;
+}
+
+.document-preview {
+  text-align: center;
+
+  ion-text {
+    font-size: 13px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+}
+
+.file-item {
+  border: 1px solid var(--ion-color-light-shade);
+  background: var(--ion-color-light);
+}
+
+.file-item-left {
+  min-width: 0;
+}
+
+.file-thumb {
+  object-fit: cover;
+}
+
+.doc-thumb {
+  background: white;
+}
+
+.file-name {
+  overflow: hidden;
+}
