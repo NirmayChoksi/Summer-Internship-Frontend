@@ -1,0 +1,30 @@
+ion-input {
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+
+  &.has-focus {
+    border-color: var(--ion-color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), 0.12);
+  }
+
+  &.input-disabled {
+    opacity: 0.5;
+    background: var(--ion-color-light);
+  }
+
+  ion-input-password-toggle {
+    height: 24px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+ion-input.error {
+  border-color: var(--ion-color-danger);
+
+  &.has-focus {
+    box-shadow: 0 0 0 3px rgba(var(--ion-color-danger-rgb), 0.12);
+  }
+}

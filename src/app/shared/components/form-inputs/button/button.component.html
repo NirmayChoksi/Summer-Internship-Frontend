@@ -1,0 +1,33 @@
+<ion-button
+  [type]="type()"
+  [fill]="ionFill()"
+  [color]="color()"
+  [expand]="expand()"
+  [shape]="shape()"
+  [disabled]="isDisabled()"
+  [class.icon-only]="iconOnly()"
+  [class.is-loading]="loading()"
+  class="ion-no-margin"
+>
+  @if (loading()) {
+    @if (iconOnly()) {
+      <ion-spinner name="crescent" aria-hidden="true" />
+    } @else {
+      <ion-spinner name="crescent" slot="start" aria-hidden="true" />
+    }
+  } @else if (iconStart()) {
+    @if (iconOnly()) {
+      <ion-icon [name]="iconStart()" aria-hidden="true" />
+    } @else {
+      <ion-icon [name]="iconStart()" slot="start" aria-hidden="true" />
+    }
+  }
+
+  @if (!iconOnly()) {
+    <span>{{ label() }}</span>
+  }
+
+  @if (!loading() && iconEnd() && !iconOnly()) {
+    <ion-icon [name]="iconEnd()" slot="end" aria-hidden="true" />
+  }
+</ion-button>

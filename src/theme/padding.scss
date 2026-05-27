@@ -1,0 +1,29 @@
+@for $i from 0 through 50 {
+  .p-#{$i} {
+    padding: #{$i}px;
+  }
+
+  .pt-#{$i} {
+    padding-top: #{$i}px;
+  }
+
+  .pb-#{$i} {
+    padding-bottom: #{$i}px;
+  }
+
+  .pl-#{$i} {
+    padding-left: #{$i}px;
+  }
+
+  .pr-#{$i} {
+    padding-right: #{$i}px;
+  }
+
+  .px-#{$i} {
+    padding-inline: #{$i}px;
+  }
+
+  .py-#{$i} {
+    padding-block: #{$i}px;
+  }
+}

@@ -1,0 +1,27 @@
+<div class="form-input">
+  @if (label()) {
+    <ion-label>
+      {{ label() }}
+      @if (isRequired()) {
+        <span style="color: var(--ion-color-danger)"> *</span>
+      }
+    </ion-label>
+  }
+
+  <ion-radio-group (ionChange)="onSelect($event)" [value]="value()">
+    @for (opt of options(); track opt.value) {
+      <ion-item>
+        <ion-radio (ionBlur)="onBlur()" [disabled]="isDisabled()" [value]="opt.value">
+          <ion-text>{{ opt.label }}</ion-text>
+        </ion-radio>
+      </ion-item>
+    }
+  </ion-radio-group>
+
+  @if (hasError()) {
+    <ion-note color="danger">
+      <ion-icon name="alert-circle-outline" />
+      {{ errorMessage() }}
+    </ion-note>
+  }
+</div>

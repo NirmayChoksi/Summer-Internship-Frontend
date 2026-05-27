@@ -1,0 +1,23 @@
+ion-checkbox {
+  --size: 18px;
+  --checkbox-background: var(--ion-background-color);
+  --checkbox-background-checked: var(--ion-color-primary);
+  --border-color: var(--ion-color-medium-shade);
+  --border-color-checked: var(--ion-color-primary);
+  --border-radius: 4px;
+  --border-width: 1.5px;
+  --checkmark-color: var(--ion-color-primary-contrast);
+  --checkmark-width: 2px;
+
+  margin-inline-end: 10px;
+  align-self: flex-start;
+  margin-top: 2px;
+
+  &.error {
+    --border-color: var(--ion-color-danger);
+  }
+
+  &.checkbox-disabled {
+    opacity: 0.45;
+  }
+}

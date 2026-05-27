@@ -1,0 +1,35 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="loginForm"
+    class="ion-flex-column gap-16 ion-justify-content-between hp-100"
+  >
+    <div class="ion-flex-column gap-16 ion-justify-content-center">
+      <app-input
+        autocomplete="email"
+        formControlName="email"
+        inputMode="email"
+        label="Email"
+        placeholder="Email"
+        type="email"
+      ></app-input>
+      <app-input formControlName="password" type="password" label="Password"> </app-input>
+      <app-select formControlName="role" label="Role" [options]="roleOptions"></app-select>
+    </div>
+
+    <div class="ion-flex-column gap-12">
+      <app-button [disabled]="loginForm.invalid" [loading]="isLoading" label="Submit" type="submit" />
+
+      <div class="auth-redirect ion-text-center fs-14">
+        <span>Don't have an account?</span>
+        <a routerLink="/auth/register" class="ml-4 fw-600">Register</a>
+      </div>
+    </div>
+  </form>
+</ion-content>
