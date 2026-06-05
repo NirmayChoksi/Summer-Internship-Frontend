@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -45,14 +45,14 @@ import { Auth } from '../services/auth';
   ],
 })
 export class CreatePasswordPage implements OnInit {
-  private fb = inject(FormBuilder);
   private authService = inject(Auth);
-  private router = inject(Router);
+  private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
-  private userId?: string;
   createPasswordForm!: FormGroup;
-  isLoading = false;
+  isLoading = signal<boolean>(false);
+  private userId?: string;
 
   constructor() {
     addIcons({ alertCircleOutline });
@@ -93,7 +93,7 @@ export class CreatePasswordPage implements OnInit {
       return;
     }
 
-    this.isLoading = true;
+    this.isLoading.set(true);
 
     const value = this.createPasswordForm.getRawValue();
 
@@ -103,7 +103,7 @@ export class CreatePasswordPage implements OnInit {
         password: value.password,
         confirmPassword: value.confirmPassword,
       })
-      .pipe(finalize(() => (this.isLoading = false)))
+      .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: () => this.router.navigate(['/auth/login']),
         error: (err) => console.error(err.error),

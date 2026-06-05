@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -48,8 +48,8 @@ export class VerifyOtpPage implements OnInit {
   verifyOtpForm!: FormGroup;
   private userId?: string;
   email?: string;
-  isSubmitting = false;
-  isResending = false;
+  isSubmitting = signal<boolean>(false);
+  isResending = signal<boolean>(false);
 
   constructor() {}
 
@@ -77,13 +77,13 @@ export class VerifyOtpPage implements OnInit {
       return;
     }
 
-    this.isSubmitting = true;
+    this.isSubmitting.set(true);
 
     const value = this.verifyOtpForm.getRawValue();
 
     this.authService
       .verifyOtp({ id: this.userId, otp: String(value.otp) })
-      .pipe(finalize(() => (this.isSubmitting = false)))
+      .pipe(finalize(() => this.isSubmitting.set(false)))
       .subscribe({
         next: () => {
           this.router.navigate(['/auth/create-password'], {
@@ -99,11 +99,11 @@ export class VerifyOtpPage implements OnInit {
   resendOtp() {
     if (!this.email) return;
 
-    this.isResending = true;
+    this.isResending.set(true);
 
     this.authService
       .resendOtp(this.email)
-      .pipe(finalize(() => (this.isResending = false)))
+      .pipe(finalize(() => this.isResending.set(false)))
       .subscribe({
         next: () => {
           console.log('OTP resent successfully');

@@ -1,7 +1,5 @@
-import { Component, computed, input, OnInit } from '@angular/core';
-import { IonIcon, IonSpinner, IonButton } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-// import * as allIcons from 'ionicons/icons';
+import { Component, computed, input } from '@angular/core';
+import { IonButton, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 
 export type ButtonFill = 'solid' | 'outline' | 'ghost' | 'clear';
 export type ButtonColor =
@@ -19,30 +17,25 @@ export type ButtonType = 'button' | 'submit' | 'reset';
   selector: 'app-button',
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss'],
-  imports: [IonIcon, IonSpinner, IonButton],
+  imports: [IonButton, IonIcon, IonSpinner],
 })
 export class ButtonComponent {
-  // Content
   label = input<string>('');
   iconStart = input<string>('');
   iconEnd = input<string>('');
   iconOnly = input<boolean>(false);
 
-  // Appearance
   fill = input<ButtonFill>('solid');
   color = input<ButtonColor>('primary');
   expand = input<ButtonExpand>('block');
   shape = input<'round' | undefined>(undefined);
 
-  // State
   disabled = input<boolean>(false);
   loading = input<boolean>(false);
   type = input<ButtonType>('button');
 
-  // ghost maps to Ionic's 'clear'
   ionFill = computed(() => (this.fill() === 'ghost' ? 'clear' : this.fill()));
 
-  // Disable while loading
   isDisabled = computed(() => this.disabled() || this.loading());
 
   constructor() {}

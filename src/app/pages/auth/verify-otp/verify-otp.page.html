@@ -22,13 +22,13 @@
     </div>
 
     <div class="ion-flex-column gap-12">
-      <app-button label="Verify OTP" type="submit" [loading]="isSubmitting" />
+      <app-button label="Verify OTP" type="submit" [loading]="isSubmitting()" />
 
       <app-button
         label="Resend OTP"
         fill="clear"
-        [loading]="isResending"
-        [disabled]="isSubmitting"
+        [loading]="isResending()"
+        [disabled]="isSubmitting()"
         (click)="resendOtp()"
       />
     </div>

@@ -1,19 +1,20 @@
 <ion-button
-  [type]="type()"
-  [fill]="ionFill()"
-  [color]="color()"
-  [expand]="expand()"
-  [shape]="shape()"
-  [disabled]="isDisabled()"
+  [class.fs-24]="iconOnly()"
   [class.icon-only]="iconOnly()"
   [class.is-loading]="loading()"
-  class="ion-no-margin"
+  [color]="color()"
+  [disabled]="isDisabled()"
+  [expand]="expand()"
+  [fill]="ionFill()"
+  [shape]="shape()"
+  [type]="type()"
+  class="ion-no-margin h-44 fs-15 fw-500"
 >
   @if (loading()) {
     @if (iconOnly()) {
-      <ion-spinner name="crescent" aria-hidden="true" />
+      <ion-spinner class="w-16 h-16" name="crescent" aria-hidden="true" />
     } @else {
-      <ion-spinner name="crescent" slot="start" aria-hidden="true" />
+      <ion-spinner class="w-16 h-16" name="crescent" slot="start" aria-hidden="true" />
     }
   } @else if (iconStart()) {
     @if (iconOnly()) {

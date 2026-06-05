@@ -44,6 +44,11 @@ export abstract class FormValueAccessor<T> implements ControlValueAccessor {
     if (errs['min']) return `Minimum value is ${errs['min'].min}`;
     if (errs['max']) return `Maximum value is ${errs['max'].max}`;
     if (errs['pattern']) return 'Invalid format';
+    if (errs['invalidDate']) return 'Invalid date';
+    if (errs['minDate'])
+      return `Date must be on or after ${errs['minDate'].minDate.toLocaleDateString()}`;
+    if (errs['maxDate'])
+      return `Date must be on or before ${errs['maxDate'].maxDate.toLocaleDateString()}`;
 
     return `Invalid value (${Object.keys(errs)[0]})`;
   });

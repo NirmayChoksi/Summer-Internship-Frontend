@@ -23,7 +23,7 @@
     </div>
 
     <div class="ion-flex-column gap-12">
-      <app-button [disabled]="registrationForm.invalid" [loading]="isLoading" label="Submit" type="submit" />
+      <app-button [disabled]="registrationForm.invalid" [loading]="isLoading()" label="Submit" type="submit" />
 
       <div class="auth-redirect ion-text-center fs-14">
         <span>Already have an account?</span>

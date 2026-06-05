@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -40,12 +40,12 @@ import { Auth } from '../services/auth';
   ],
 })
 export class LoginPage implements OnInit {
-  private fb = inject(FormBuilder);
   private authService = inject(Auth);
+  private fb = inject(FormBuilder);
   private router = inject(Router);
 
+  isLoading = signal<boolean>(false);
   loginForm!: FormGroup;
-  isLoading = false;
   roleOptions: SelectOption[] = Object.entries(UserRole).map(([key, value]) => {
     return { label: key, value };
   });
@@ -78,11 +78,11 @@ export class LoginPage implements OnInit {
       return;
     }
 
-    this.isLoading = true;
+    this.isLoading.set(true);
 
     this.authService
       .login(this.loginForm.getRawValue())
-      .pipe(finalize(() => (this.isLoading = false)))
+      .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: (res) => {
           this.navigateUser(res.user.role);
