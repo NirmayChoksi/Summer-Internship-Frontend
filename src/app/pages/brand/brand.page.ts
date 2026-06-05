@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonIcon, IonTabBar, IonTabButton, IonTabs } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { homeOutline, personOutline } from 'ionicons/icons';
+import { homeOutline, megaphoneOutline, personOutline } from 'ionicons/icons';
+import { TabOptions } from 'src/app/shared/models/interfaces';
 import { Auth } from '../auth/services/auth';
 import { BrandProfileService } from './profile/services/brand-profile';
 
@@ -19,16 +20,21 @@ export class BrandPage implements OnInit {
   private authService = inject(Auth);
   private profileService = inject(BrandProfileService);
 
+  tabs = signal<TabOptions[]>([
+    { label: 'Home', icon: 'home-outline', route: 'home' },
+    { label: 'Campaigns', icon: 'megaphone-outline', route: 'campaigns' },
+    { label: 'Profile', icon: 'person-outline', route: 'profile' },
+  ]);
+
   constructor() {
-    addIcons({ homeOutline, personOutline });
+    addIcons({ homeOutline, personOutline, megaphoneOutline });
   }
 
   ngOnInit() {
-    const userId = this.authService.user()?._id;
-    const isProfileComplete = this.authService.isProfileComplete();
     const existingProfile = this.profileService.profile();
+    const isProfileComplete = this.authService.isProfileComplete();
 
-    if (userId && isProfileComplete && !existingProfile)
-      this.profileService.getBrandProfileByUserId(userId).subscribe();
+    if (isProfileComplete && !existingProfile)
+      this.profileService.getBrandProfileByUserId().subscribe();
   }
 }
