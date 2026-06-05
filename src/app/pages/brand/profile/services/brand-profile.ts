@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
+import { tap } from 'rxjs';
+import { Auth } from 'src/app/pages/auth/services/auth';
 import { environment } from 'src/environments/environment';
 import { BrandEndpoints } from '../../models/constants';
 import { BrandProfile, CreateBrandProfile, UpdateBrandProfile } from '../models/interfaces';
-import { Auth } from 'src/app/pages/auth/services/auth';
-import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -17,16 +17,14 @@ export class BrandProfileService {
 
   profile = signal<BrandProfile | null>(null);
 
-  createBrandProfile(userId: string, data: CreateBrandProfile) {
-    return this.http
-      .post<{ message: string; profile: BrandProfile }>(`${this.baseUrl}/${userId}`, data)
-      .pipe(
-        tap(({ profile }) => {
-          this.profile.set(profile);
+  createBrandProfile(data: CreateBrandProfile) {
+    return this.http.post<{ message: string; profile: BrandProfile }>(`${this.baseUrl}`, data).pipe(
+      tap(({ profile }) => {
+        this.profile.set(profile);
 
-          this.authService.updateUser({ isProfileComplete: true });
-        }),
-      );
+        this.authService.updateUser({ isProfileComplete: true });
+      }),
+    );
   }
 
   getBrandProfileById(profileId: string) {
@@ -35,9 +33,9 @@ export class BrandProfileService {
       .pipe(tap(({ profile }) => this.profile.set(profile)));
   }
 
-  getBrandProfileByUserId(userId: string) {
+  getBrandProfileByUserId() {
     return this.http
-      .get<{ message: string; profile: BrandProfile }>(`${this.baseUrl}/user/${userId}`)
+      .get<{ message: string; profile: BrandProfile }>(`${this.baseUrl}/user`)
       .pipe(tap(({ profile }) => this.profile.set(profile)));
   }
 

@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      {{ isEditMode ? 'Edit Profile' : 'Create Profile' }}
+      {{ isEditMode() ? 'Edit Profile' : 'Create Profile' }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -20,7 +20,7 @@
       <app-input label="Company Name" formControlName="companyName" />
       <app-text-area label="Description" formControlName="description" />
       <app-input label="Website" formControlName="website" placeholder="https://..." type="url" inputMode="url" />
-      <app-select [options]="industryOptions" label="Industry" formControlName="industry" />
+      <app-select [options]="industryOptions" [multiple]="true" label="Industry" formControlName="industry" />
     </div>
 
     <div class="ion-flex-column gap-12">
@@ -49,6 +49,6 @@
       <app-input label="Email" formControlName="email" type="email" inputMode="email" />
     </div>
 
-    <app-button [label]="isEditMode ? 'Update Profile' : 'Create Profile'" type="submit" [loading]="isLoading()" />
+    <app-button [label]="isEditMode() ? 'Update Profile' : 'Create Profile'" type="submit" [loading]="isLoading()" />
   </form>
 </ion-content>

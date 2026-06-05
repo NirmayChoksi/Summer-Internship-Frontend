@@ -12,7 +12,7 @@ export interface BrandProfile {
   companyName: string;
   description: string;
   website: string;
-  industry: Industry;
+  industry: Industry[];
   budget: Budget;
   firstName: string;
   lastName: string;

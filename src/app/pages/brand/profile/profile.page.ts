@@ -69,7 +69,7 @@ export class ProfilePage implements OnInit {
     label: key,
     value,
   }));
-  isEditMode = false;
+  isEditMode = signal<boolean>(false);
   isLoading = signal<boolean>(false);
   profileForm!: FormGroup;
   profileId?: string;
@@ -81,7 +81,7 @@ export class ProfilePage implements OnInit {
       const profile = this.brandProfileService.profile();
 
       if (profile) {
-        this.isEditMode = true;
+        this.isEditMode.set(true);
         this.profileId = profile._id;
         this.patchForm(profile);
       }
@@ -98,14 +98,14 @@ export class ProfilePage implements OnInit {
       companyName: ['', [Validators.required]],
       description: ['', [Validators.required]],
       website: ['', [Validators.required, Validators.pattern(/^https?:\/\/.+$/)]],
-      industry: ['', [Validators.required]],
+      industry: [[], [Validators.required]],
       budget: this.fb.group(
         {
           min: ['', [Validators.required, Validators.min(0)]],
           max: ['', [Validators.required, Validators.min(0)]],
         },
         {
-          validators: budgetValidator,
+          validators: budgetValidator(),
         },
       ),
       firstName: ['', [Validators.required]],
@@ -146,10 +146,6 @@ export class ProfilePage implements OnInit {
   }
 
   onSubmit() {
-    const userId = this.authService.user()?._id;
-
-    if (!userId) return;
-
     if (this.profileForm.invalid) {
       this.profileForm.markAllAsTouched();
       return;
@@ -170,11 +166,10 @@ export class ProfilePage implements OnInit {
         switchMap(({ url }) => {
           const payload = this.buildPayload(value, url);
 
-          if (this.isEditMode && this.profileId) {
+          if (this.isEditMode() && this.profileId)
             return this.brandProfileService.updateBrandProfile(this.profileId, payload);
-          }
 
-          return this.brandProfileService.createBrandProfile(userId, payload);
+          return this.brandProfileService.createBrandProfile(payload);
         }),
         finalize(() => this.isLoading.set(false)),
       )
@@ -186,15 +181,9 @@ export class ProfilePage implements OnInit {
 
   private buildPayload(value: any, logo: string): CreateBrandProfile {
     return {
+      ...value,
       companyLogo: logo,
-      companyName: value.companyName,
-      description: value.description,
-      website: value.website,
-      industry: value.industry,
       budget: { min: Number(value.budget.min), max: Number(value.budget.max) },
-      firstName: value.firstName,
-      lastName: value.lastName,
-      contactNumber: value.contactNumber,
     };
   }
 }
