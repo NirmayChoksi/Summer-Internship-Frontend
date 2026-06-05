@@ -58,7 +58,7 @@ import { platformNames } from 'src/app/shared/utils/platform-names';
   ],
 })
 export class ProfilePage implements OnInit {
-  authService = inject(Auth);
+  private authService = inject(Auth);
   private fb = inject(FormBuilder);
   private influencerProfileService = inject(InfluencerProfileService);
 

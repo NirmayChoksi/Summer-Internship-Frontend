@@ -40,16 +40,16 @@ import { Auth } from '../services/auth';
   ],
 })
 export class VerifyOtpPage implements OnInit {
+  private authService = inject(Auth);
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private authService = inject(Auth);
 
-  verifyOtpForm!: FormGroup;
-  private userId?: string;
   email?: string;
-  isSubmitting = signal<boolean>(false);
   isResending = signal<boolean>(false);
+  isSubmitting = signal<boolean>(false);
+  private userId?: string;
+  verifyOtpForm!: FormGroup;
 
   constructor() {}
 
@@ -90,9 +90,7 @@ export class VerifyOtpPage implements OnInit {
             queryParams: { id: this.userId, email: this.email },
           });
         },
-        error: (err) => {
-          console.error(err.error);
-        },
+        error: (err) => console.error(err.error),
       });
   }
 
@@ -105,12 +103,8 @@ export class VerifyOtpPage implements OnInit {
       .resendOtp(this.email)
       .pipe(finalize(() => this.isResending.set(false)))
       .subscribe({
-        next: () => {
-          console.log('OTP resent successfully');
-        },
-        error: (err) => {
-          console.error(err.error);
-        },
+        next: () => console.log('OTP resent successfully'),
+        error: (err) => console.error(err.error),
       });
   }
 }

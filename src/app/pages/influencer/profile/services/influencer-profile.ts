@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
+import { tap } from 'rxjs';
+import { Auth } from 'src/app/pages/auth/services/auth';
 import { environment } from 'src/environments/environment';
 import { InfluencerEndpoints } from '../../models/constants';
 import {
@@ -7,8 +9,6 @@ import {
   InfluencerProfile,
   UpdateInfluencerProfile,
 } from '../models/interfaces';
-import { tap } from 'rxjs';
-import { Auth } from 'src/app/pages/auth/services/auth';
 
 @Injectable({
   providedIn: 'root',

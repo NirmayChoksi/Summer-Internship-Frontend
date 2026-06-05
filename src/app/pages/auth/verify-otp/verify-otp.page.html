@@ -25,11 +25,11 @@
       <app-button label="Verify OTP" type="submit" [loading]="isSubmitting()" />
 
       <app-button
-        label="Resend OTP"
-        fill="clear"
-        [loading]="isResending()"
-        [disabled]="isSubmitting()"
         (click)="resendOtp()"
+        [disabled]="isSubmitting()"
+        [loading]="isResending()"
+        fill="clear"
+        label="Resend OTP"
       />
     </div>
   </form>

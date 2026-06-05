@@ -10,8 +10,8 @@ import { BrandProfile, CreateBrandProfile, UpdateBrandProfile } from '../models/
   providedIn: 'root',
 })
 export class BrandProfileService {
-  private http = inject(HttpClient);
   private authService = inject(Auth);
+  private http = inject(HttpClient);
 
   private baseUrl = `${environment.baseUrl}${BrandEndpoints.base}${BrandEndpoints.profile.base}`;
 
