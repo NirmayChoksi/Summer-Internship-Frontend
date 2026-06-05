@@ -9,3 +9,9 @@ export interface ApiErrorResponse {
 }
 
 export type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse;
+
+export interface TabOptions {
+  icon: string;
+  label: string;
+  route: string;
+}

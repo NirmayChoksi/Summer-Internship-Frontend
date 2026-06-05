@@ -1,12 +1,10 @@
 <ion-tabs>
   <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="home">
-      <ion-icon name="home-outline"></ion-icon>
-      Home
-    </ion-tab-button>
-    <ion-tab-button tab="profile">
-      <ion-icon name="person-outline"></ion-icon>
-      Profile
-    </ion-tab-button>
+    @for (tab of tabs(); track $index) {
+      <ion-tab-button [tab]="tab.route">
+        <ion-icon [name]="tab.icon"></ion-icon>
+        {{ tab.label }}
+      </ion-tab-button>
+    }
   </ion-tab-bar>
 </ion-tabs>
