@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './shared/guards/auth-guard';
-import { rbacGuard } from './shared/guards/rbac-guard';
 import { UserRole } from './pages/auth/models/enums';
-import { profileCompletionGuard } from './shared/guards/profile-completion-guard';
+import { authGuard } from './shared/guards/auth-guard';
 import { guestGuard } from './shared/guards/guest-guard';
+import { profileCompletionGuard } from './shared/guards/profile-completion-guard';
+import { rbacGuard } from './shared/guards/rbac-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
@@ -50,6 +50,11 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/brand/home/home.page').then((m) => m.HomePage),
       },
       {
+        path: 'campaigns',
+        loadComponent: () =>
+          import('./pages/brand/campaigns/campaigns.page').then((m) => m.CampaignsPage),
+      },
+      {
         path: 'profile',
         loadComponent: () =>
           import('./pages/brand/profile/profile.page').then((m) => m.ProfilePage),
@@ -69,6 +74,11 @@ export const routes: Routes = [
       {
         path: 'home',
         loadComponent: () => import('./pages/influencer/home/home.page').then((m) => m.HomePage),
+      },
+      {
+        path: 'campaigns',
+        loadComponent: () =>
+          import('./pages/influencer/campaigns/campaigns.page').then((m) => m.CampaignsPage),
       },
       {
         path: 'profile',

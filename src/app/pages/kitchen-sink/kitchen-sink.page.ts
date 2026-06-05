@@ -8,7 +8,7 @@ import { InputComponent } from 'src/app/shared/components/form-inputs/input/inpu
 import { RadioButtonComponent } from 'src/app/shared/components/form-inputs/radio-button/radio-button.component';
 import { SelectComponent } from 'src/app/shared/components/form-inputs/select/select.component';
 import { TextAreaComponent } from 'src/app/shared/components/form-inputs/text-area/text-area.component';
-import { FileUploadComponent } from "src/app/shared/components/form-inputs/file-upload/file-upload.component";
+import { FileUploadComponent } from 'src/app/shared/components/form-inputs/file-upload/file-upload.component';
 
 @Component({
   selector: 'app-kitchen-sink',
@@ -31,8 +31,8 @@ import { FileUploadComponent } from "src/app/shared/components/form-inputs/file-
     RadioButtonComponent,
     TextAreaComponent,
     IonButton,
-    FileUploadComponent
-],
+    FileUploadComponent,
+  ],
 })
 export class KitchenSinkPage {
   private fb = inject(FormBuilder);
@@ -79,10 +79,7 @@ export class KitchenSinkPage {
 
   onSubmit(): void {
     this.form.markAllAsTouched();
-    if (this.form.valid) {
-      this.submitted = true;
-      console.log(this.form.value);
-    }
+    if (this.form.valid) this.submitted = true;
   }
 
   onReset(): void {

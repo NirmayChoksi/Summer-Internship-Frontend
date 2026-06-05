@@ -1,0 +1,236 @@
+<div class="ion-page" id="main-content">
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-title>Campaigns</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content [fullscreen]="true" class="ion-padding">
+    @if (isLoadingCampaigns()) {
+      <div class="ion-text-center hp-100 ion-flex-row ion-justify-content-center ion-align-items-center">
+        <ion-spinner name="crescent" aria-hidden="true" class="w-100 h-100" />
+      </div>
+    } @else {
+      <div class="ion-flex-column gap-16">
+        <div class="ion-flex-row wp-100 ion-justify-content-end">
+          <ion-menu-toggle>
+            <app-button
+              (click)="closeCampaignDetailsModal()"
+              [iconOnly]="true"
+              color="medium"
+              fill="ghost"
+              iconStart="filter-circle-outline"
+              type="button"
+            />
+          </ion-menu-toggle>
+        </div>
+        @for (campaign of campaigns(); track campaign._id) {
+          <app-campaign-card [campaign]="campaign" (click)="openCampaignDetailsModal(campaign._id)"></app-campaign-card>
+        } @empty {
+          <div class="ion-text-center hp-100 ion-flex-row ion-justify-content-center ion-align-items-center">
+            <ion-text color="medium" class="fs-28"
+              >No campaigns found. Create your first campaign to get started.</ion-text
+            >
+          </div>
+        }
+        <ion-infinite-scroll (ionInfinite)="loadMoreCampaigns($event)" [disabled]="!hasNextPage()">
+          <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading more campaigns...">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </div>
+    }
+  </ion-content>
+</div>
+
+<ion-menu contentId="main-content" [swipeGesture]="false">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Filters</ion-title>
+      <ion-buttons slot="end">
+        <ion-menu-toggle>
+          <app-button [iconOnly]="true" color="danger" fill="ghost" iconStart="close-outline" type="button" />
+        </ion-menu-toggle>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <div class="ion-flex-column hp-100 ion-justify-content-between">
+      <div class="ion-flex-column gap-16">
+        <div class="ion-flex-column gap-12">
+          <ion-label color="medium"> Industry </ion-label>
+          <div class="chip-container ion-flex-row gap-8 ion-flex-nowrap wp-100">
+            @for (industry of industryOptions(); track industry.value) {
+              <ion-chip
+                class="ion-no-margin ion-flex-shrink-0"
+                (click)="selectIndustry(industry.value)"
+                [color]="selectedIndustry() === industry.value ? 'primary' : 'dark'"
+              >
+                {{ industry.label }}
+              </ion-chip>
+            }
+          </div>
+        </div>
+
+        <div class="ion-flex-column gap-12">
+          <ion-label color="medium"> Budget </ion-label>
+          <ion-range
+            [min]="budgetOption().min"
+            [max]="budgetOption().max"
+            [pin]="true"
+            class="ion-no-padding"
+            [dualKnobs]="true"
+            [value]="selectedBudget()"
+            (ionChange)="onBudgetChange($event)"
+          >
+            <ion-label slot="start">0</ion-label>
+            <ion-label slot="end">10000</ion-label>
+          </ion-range>
+        </div>
+
+        <div class="ion-flex-column gap-12">
+          <ion-label color="medium"> Platform </ion-label>
+          <div class="chip-container ion-flex-row gap-8 ion-flex-nowrap wp-100">
+            @for (platform of platformOptions(); track platform.value) {
+              <ion-chip
+                class="ion-no-margin ion-flex-shrink-0"
+                (click)="selectPlatform(platform.value)"
+                [color]="selectedPlatform() === platform.value ? 'primary' : 'dark'"
+              >
+                {{ platform.label }}
+              </ion-chip>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="ion-flex-column gap-8 ion-margin-top">
+        <app-button label="Apply Filters" (click)="loadCampaigns()" />
+        <app-button label="Clear Filters" color="medium" fill="outline" (click)="clearFilters()" />
+      </div>
+    </div>
+  </ion-content>
+</ion-menu>
+
+<ion-modal [isOpen]="isCampaignDetailsModalOpen()" [canDismiss]="canDismiss" [keepContentsMounted]="true">
+  <ng-template>
+    @if (selectedCampaign(); as campaign) {
+      <ion-header>
+        <ion-toolbar>
+          <ion-title> {{ campaign.title }} </ion-title>
+          <ion-buttons slot="end">
+            @if (campaign.status === campaignStatus.Active) {
+              @if (campaign.myApplication && campaign.myApplication.status === influencerStatus.Pending) {
+                <app-button
+                  (click)="leaveCampaign()"
+                  [iconOnly]="true"
+                  color="danger"
+                  fill="ghost"
+                  iconStart="exit-outline"
+                  type="button"
+                />
+              }
+              @if (campaign.myApplication === null) {
+                <app-button
+                  (click)="joinCampaign()"
+                  [iconOnly]="true"
+                  fill="ghost"
+                  iconStart="enter-outline"
+                  type="button"
+                />
+              }
+            }
+
+            <app-button
+              (click)="closeCampaignDetailsModal()"
+              [iconOnly]="true"
+              color="danger"
+              fill="ghost"
+              iconStart="close-outline"
+              type="button"
+            />
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <div class="ion-flex-column gap-24">
+          <div class="ion-flex-column gap-8">
+            <ion-text color="medium">Campaign Information</ion-text>
+            <ion-card>
+              <ion-card-content>
+                <div class="ion-flex-column gap-12">
+                  <div>
+                    <strong>Title</strong>
+                    <div>{{ campaign.title }}</div>
+                  </div>
+                  <div>
+                    <strong>Industry</strong>
+                    <div>{{ campaign.industry | titlecase }}</div>
+                  </div>
+                  <div>
+                    <strong>Description</strong>
+                    <div>{{ campaign.description }}</div>
+                  </div>
+                  <div>
+                    <strong>Platforms</strong>
+                    <div>{{ campaign.platforms.join(', ') }}</div>
+                  </div>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </div>
+
+          <div class="ion-flex-column gap-8">
+            <ion-text color="medium">Campaign Stats</ion-text>
+            <ion-card>
+              <ion-card-content>
+                <div class="ion-flex-column gap-12">
+                  <div class="ion-flex-row ion-justify-content-between">
+                    <span>Payout</span>
+                    <strong>{{ campaign.payout | currency }}</strong>
+                  </div>
+                  <div class="ion-flex-row ion-justify-content-between">
+                    <span>End Date</span>
+                    <strong>{{ campaign.endDate | date: 'mediumDate' }}</strong>
+                  </div>
+                  <div class="ion-flex-row ion-justify-content-between">
+                    <span>Status</span>
+                    <ion-chip color="primary">
+                      {{ campaign.status | titlecase }}
+                    </ion-chip>
+                  </div>
+                  <div class="ion-flex-row ion-justify-content-between">
+                    <span>Accepted Influencers</span>
+                    <strong> {{ campaign.acceptedInfluencersCount }} / {{ campaign.maximumInfluencers }} </strong>
+                  </div>
+
+                  <ion-progress-bar
+                    [value]="
+                      campaign.maximumInfluencers ? campaign.acceptedInfluencersCount / campaign.maximumInfluencers : 0
+                    "
+                  />
+
+                  @if (campaign.myApplication) {
+                    <div class="ion-flex-row ion-justify-content-between">
+                      <span>My Application Status</span>
+                      <ion-chip
+                        [color]="
+                          campaign.myApplication.status === influencerStatus.Accepted
+                            ? 'success'
+                            : campaign.myApplication.status === influencerStatus.Rejected
+                              ? 'danger'
+                              : 'warning'
+                        "
+                      >
+                        {{ campaign.myApplication.status }}
+                      </ion-chip>
+                    </div>
+                  }
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </div>
+        </div>
+      </ion-content>
+    }
+  </ng-template>
+</ion-modal>

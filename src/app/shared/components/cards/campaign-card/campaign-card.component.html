@@ -1,0 +1,46 @@
+@if (campaign(); as campaign) {
+  <ion-card class="br-16 ion-no-margin">
+    <ion-card-header>
+      <div class="ion-flex-row ion-justify-content-between">
+        <div class="ion-flex-row gap-8">
+          <img [src]="campaign.brand.companyLogo" class="h-48 w-48 br-12" />
+          <div class="ion-flex-column ion-justify-content-between">
+            <ion-card-title>{{ campaign.brand.companyName }}</ion-card-title>
+            <ion-card-subtitle>{{ campaign.platforms.join(', ') }}</ion-card-subtitle>
+          </div>
+        </div>
+        <div class="ion-flex-row ion-align-items-center">
+          <ion-chip color="primary">{{ campaign.industry | titlecase }}</ion-chip>
+        </div>
+      </div>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="ion-flex-column gap-8">
+        <div class="ion-flex-column ion-justify-content-between">
+          <ion-card-title>{{ campaign.title }}</ion-card-title>
+          <ion-card-subtitle>{{ campaign.description }}</ion-card-subtitle>
+        </div>
+        <div class="ion-flex-row ion-justify-content-between">
+          <ion-text color="dark">{{ campaign.payout | currency: 'INR' }}</ion-text>
+          <div class="ion-flex-row ion-align-items-center gap-8">
+            <div class="ion-flex-row ion-align-items-center gap-2">
+              <ion-icon name="time-outline" color="dark"></ion-icon>
+              <ion-text color="dark">{{ campaign.startDate | daysLeft:campaign.endDate }}</ion-text>
+            </div>
+            <div class="ion-flex-row ion-align-items-center gap-2">
+              <ion-icon name="people" color="dark"></ion-icon>
+              <ion-text color="dark">
+                {{ campaign.acceptedInfluencersCount }}/{{ campaign.maximumInfluencers }}
+              </ion-text>
+            </div>
+          </div>
+        </div>
+        <ion-progress-bar
+          type="determinate"
+          [value]="campaign.maximumInfluencers ? campaign.acceptedInfluencersCount / campaign.maximumInfluencers : 0"
+          class="br-50"
+        ></ion-progress-bar>
+      </div>
+    </ion-card-content>
+  </ion-card>
+}

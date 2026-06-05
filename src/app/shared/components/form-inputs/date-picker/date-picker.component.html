@@ -1,0 +1,36 @@
+<div class="form-input">
+  @if (label()) {
+    <ion-label>
+      {{ label() }}
+      @if (isRequired()) {
+        <span aria-hidden="true"> *</span>
+      }
+    </ion-label>
+  }
+
+  <!-- TODO: Style this like other components -->
+  <ion-datetime-button [datetime]="id" class="ion-no-margin ion-justify-content-start"> </ion-datetime-button>
+
+  <ion-modal [keepContentsMounted]="true">
+    <ng-template>
+      <ion-datetime
+        [formatOptions]="formatOptions()"
+        [max]="max()"
+        [min]="min()"
+        [presentation]="presentation()"
+        [showDefaultButtons]="true"
+        (ionChange)="onDateChange($event)"
+        [value]="value()"
+        [id]="id"
+        locale="en-GB"
+      ></ion-datetime>
+    </ng-template>
+  </ion-modal>
+
+  @if (hasError()) {
+    <ion-note color="danger">
+      <ion-icon name="alert-circle-outline" />
+      {{ errorMessage() }}
+    </ion-note>
+  }
+</div>

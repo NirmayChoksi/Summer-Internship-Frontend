@@ -21,9 +21,9 @@ export class InfluencerProfileService {
 
   profile = signal<InfluencerProfile | null>(null);
 
-  createInfluencerProfile(userId: string, data: CreateInfluencerProfile) {
+  createInfluencerProfile(data: CreateInfluencerProfile) {
     return this.http
-      .post<{ message: string; profile: InfluencerProfile }>(`${this.baseUrl}/${userId}`, data)
+      .post<{ message: string; profile: InfluencerProfile }>(`${this.baseUrl}`, data)
       .pipe(
         tap(({ profile }) => {
           this.profile.set(profile);
@@ -41,9 +41,9 @@ export class InfluencerProfileService {
       .pipe(tap(({ profile }) => this.profile.set(profile)));
   }
 
-  getInfluencerProfileByUserId(userId: string) {
+  getInfluencerProfileByUserId() {
     return this.http
-      .get<{ message: string; profile: InfluencerProfile }>(`${this.baseUrl}/user/${userId}`)
+      .get<{ message: string; profile: InfluencerProfile }>(`${this.baseUrl}/user`)
       .pipe(tap(({ profile }) => this.profile.set(profile)));
   }
 
