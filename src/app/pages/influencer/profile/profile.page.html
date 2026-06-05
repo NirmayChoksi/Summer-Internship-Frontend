@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      {{ isEditMode ? 'Edit Profile' : 'Create Profile' }}
+      {{ isEditMode() ? 'Edit Profile' : 'Create Profile' }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -15,25 +15,17 @@
       <app-select [options]="countryOptions" label="Country" formControlName="country" />
     </div>
 
-    <div class="ion-flex-column gap-12">
+    <div class="ion-flex-column gap-12" formGroupName="platforms">
       <ion-label color="medium"> Social Links </ion-label>
 
-      <div formGroupName="instagram" class="ion-flex-row gap-16">
-        <app-input label="Instagram" type="text" formControlName="username" class="wp-100" />
-        <app-input label="Followers" type="number" inputMode="numeric" formControlName="followers" />
-      </div>
+      @for (platform of platformOptions(); track $index) {
+        <div [formGroupName]="platform.value" class="ion-flex-row gap-16">
+          <app-input [label]="platform.label" type="text" formControlName="username" class="wp-100" />
+          <app-input label="Followers" type="number" inputMode="numeric" formControlName="followers" />
+        </div>
+      }
 
-      <div formGroupName="twitter" class="ion-flex-row gap-16">
-        <app-input label="X (Twitter)" type="text" formControlName="username" class="wp-100" />
-        <app-input label="Followers" type="number" inputMode="numeric" formControlName="followers" />
-      </div>
-
-      <div formGroupName="youtube" class="ion-flex-row gap-16">
-        <app-input label="Youtube" type="text" formControlName="username" class="wp-100" />
-        <app-input label="Followers" type="number" inputMode="numeric" formControlName="followers" />
-      </div>
-
-      @if (profileForm.errors?.['atLeastOneSocial'] && profileForm.touched) {
+      @if (profileForm.get('platforms')?.errors?.['atLeastOneSocial'] && profileForm.get('platforms')?.touched) {
         <ion-note color="danger" class="fs-12 ion-flex-row gap-5 ion-align-items-center">
           <ion-icon name="alert-circle-outline" class="fs-14" />
           At least one social platform is required
@@ -68,10 +60,14 @@
     </div>
 
     <div class="ion-flex-column gap-12">
-      <ion-label color="medium"> Contact </ion-label>
+      <ion-label color="medium"> Contact Information </ion-label>
+      <div class="ion-flex-row gap-16">
+        <app-input class="wp-100" label="First Name" formControlName="firstName" />
+        <app-input class="wp-100" label="Last Name" formControlName="lastName" />
+      </div>
       <app-input label="Email" formControlName="email" />
     </div>
 
-    <app-button [label]="isEditMode ? 'Update Profile' : 'Create Profile'" type="submit" [loading]="isLoading" />
+    <app-button [label]="isEditMode() ? 'Update Profile' : 'Create Profile'" type="submit" [loading]="isLoading()" />
   </form>
 </ion-content>

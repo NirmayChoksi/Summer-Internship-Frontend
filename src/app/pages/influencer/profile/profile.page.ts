@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, OnInit, signal } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -32,6 +32,7 @@ import { Auth } from '../../auth/services/auth';
 import { Country, Niche } from './models/enums';
 import { CreateInfluencerProfile, InfluencerProfile } from './models/interfaces';
 import { InfluencerProfileService } from './services/influencer-profile';
+import { platformNames } from 'src/app/shared/utils/platform-names';
 
 @Component({
   selector: 'influencer-profile',
@@ -40,15 +41,15 @@ import { InfluencerProfileService } from './services/influencer-profile';
   styleUrls: ['./profile.page.scss'],
   standalone: true,
   imports: [
-    IonIcon,
-    IonNote,
     ButtonComponent,
     CommonModule,
     FormsModule,
     InputComponent,
     IonContent,
     IonHeader,
+    IonIcon,
     IonLabel,
+    IonNote,
     IonTitle,
     IonToolbar,
     ReactiveFormsModule,
@@ -64,13 +65,16 @@ export class ProfilePage implements OnInit {
   countryOptions: SelectOption[] = Object.entries(Country).map(([key, value]) => {
     return { label: key, value };
   });
-  isEditMode = false;
-  isLoading = false;
+  isEditMode = signal<boolean>(false);
+  isLoading = signal<boolean>(false);
   nicheOptions: SelectOption[] = Object.entries(Niche).map(([key, value]) => {
     return { label: key, value };
   });
   profileForm!: FormGroup;
   profileId?: string;
+  platformOptions = signal<{ label: string; value: string }[]>(
+    platformNames.map((value) => ({ label: value[0].toUpperCase() + value.slice(1), value })),
+  );
 
   constructor() {
     addIcons({ alertCircleOutline });
@@ -79,7 +83,7 @@ export class ProfilePage implements OnInit {
       const profile = this.influencerProfileService.profile();
 
       if (profile) {
-        this.isEditMode = true;
+        this.isEditMode.set(true);
         this.profileId = profile._id;
         this.patchForm(profile);
       }
@@ -92,45 +96,41 @@ export class ProfilePage implements OnInit {
   }
 
   createProfileForm() {
-    return this.fb.group(
-      {
-        bio: ['', Validators.required],
-        niche: [[], Validators.required],
-        country: ['', Validators.required],
-        instagram: this.createSocialGroup(),
-        twitter: this.createSocialGroup(),
-        youtube: this.createSocialGroup(),
-        pastWorks: this.fb.array([]),
-        email: [
-          {
-            value: this.authService.user()?.email,
-            disabled: true,
-          },
-        ],
-      },
-      {
-        validators: atLeastOneSocialValidator(),
-      },
-    );
+    return this.fb.group({
+      bio: ['', Validators.required],
+      niche: [[], Validators.required],
+      country: ['', Validators.required],
+      platforms: this.createPlatformsGroup(),
+      pastWorks: this.fb.array([]),
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      email: [
+        {
+          value: this.authService.user()?.email,
+          disabled: true,
+        },
+      ],
+    });
   }
 
   private patchForm(profile: InfluencerProfile) {
+    const platformValues = Object.fromEntries(
+      platformNames.map((platform) => [
+        platform,
+        {
+          username: profile.platforms?.[platform]?.username ?? '',
+          followers: profile.platforms?.[platform]?.followers ?? 0,
+        },
+      ]),
+    );
+
     this.profileForm.patchValue({
       bio: profile.bio,
       niche: profile.niche,
       country: profile.country,
-      instagram: {
-        username: profile.instagram?.username ?? '',
-        followers: profile.instagram?.followers ?? 0,
-      },
-      twitter: {
-        username: profile.twitter?.username ?? '',
-        followers: profile.twitter?.followers ?? 0,
-      },
-      youtube: {
-        username: profile.youtube?.username ?? '',
-        followers: profile.youtube?.followers ?? 0,
-      },
+      platforms: platformValues,
+      firstName: profile.firstName,
+      lastName: profile.lastName,
     });
 
     this.pastWorks.clear();
@@ -148,11 +148,21 @@ export class ProfilePage implements OnInit {
     return this.profileForm.get('pastWorks') as FormArray;
   }
 
+  private createPlatformsGroup() {
+    const controls = Object.fromEntries(
+      platformNames.map((platform) => [platform, this.createSocialGroup()]),
+    );
+
+    return this.fb.group(controls, {
+      validators: atLeastOneSocialValidator(),
+    });
+  }
+
   //TODO: Auto-populate followers based on username input
   private createSocialGroup() {
     return this.fb.group({
       username: [''],
-      followers: [{ value: 10, disabled: true }],
+      followers: [{ value: 0 }],
     });
   }
 
@@ -167,58 +177,49 @@ export class ProfilePage implements OnInit {
   }
 
   onSubmit() {
-    const userId = this.authService.user()?._id;
-
-    if (!userId) return;
-
     if (this.profileForm.invalid) {
       this.profileForm.markAllAsTouched();
 
       return;
     }
 
-    this.isLoading = true;
+    this.isLoading.set(true);
 
     const value = this.profileForm.getRawValue();
 
     const payload = this.buildPayload(value);
 
     const request =
-      this.isEditMode && this.profileId
+      this.isEditMode() && this.profileId
         ? this.influencerProfileService.updateInfluencerProfile(this.profileId, payload)
-        : this.influencerProfileService.createInfluencerProfile(userId, payload);
+        : this.influencerProfileService.createInfluencerProfile(payload);
 
-    request
-      .pipe(
-        finalize(() => {
-          this.isLoading = false;
-        }),
-      )
-      .subscribe({
-        next: () => {
-          console.log(
-            this.isEditMode ? 'Profile updated successfully' : 'Profile created successfully',
-          );
-        },
-        error: (err) => console.error(err),
-      });
+    request.pipe(finalize(() => this.isLoading.set(false))).subscribe({
+      next: () => {
+        console.log(
+          this.isEditMode() ? 'Profile updated successfully' : 'Profile created successfully',
+        );
+      },
+      error: (err) => console.error(err),
+    });
   }
 
   private buildPayload(value: any): CreateInfluencerProfile {
+    const platforms = Object.fromEntries(
+      Object.entries(value.platforms)
+        .filter(([, data]: any) => data.username)
+        .map(([name, data]: any) => [
+          name,
+          {
+            ...data,
+            followers: Number(data.followers),
+          },
+        ]),
+    );
+
     return {
-      bio: value.bio,
-      niche: value.niche,
-      country: value.country,
-      instagram: value.instagram.username
-        ? { ...value.instagram, followers: Number(value.instagram.followers) }
-        : undefined,
-      twitter: value.twitter.username
-        ? { ...value.twitter, followers: Number(value.twitter.followers) }
-        : undefined,
-      youtube: value.youtube.username
-        ? { ...value.youtube, followers: Number(value.youtube.followers) }
-        : undefined,
-      pastWorks: value.pastWorks,
+      ...value,
+      platforms,
     };
   }
 }

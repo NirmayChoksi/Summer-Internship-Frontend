@@ -10,3 +10,9 @@ export enum Country {
   USA = 'USA',
   UK = 'UK',
 }
+
+export enum Platform {
+  Instagram = 'INSTAGRAM',
+  Twitter = 'TWITTER',
+  Youtube = 'YOUTUBE',
+}

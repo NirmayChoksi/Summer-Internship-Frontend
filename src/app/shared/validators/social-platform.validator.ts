@@ -1,12 +1,11 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { platformNames } from '../utils/platform-names';
 
 export function atLeastOneSocialValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const instagram = control.get('instagram.username')?.value;
-    const twitter = control.get('twitter.username')?.value;
-    const youtube = control.get('youtube.username')?.value;
-
-    const hasAtLeastOne = !!instagram || !!twitter || !!youtube;
+    const hasAtLeastOne = platformNames.some(
+      (platform) => !!control.get(`platforms.${platform}.username`)?.value,
+    );
 
     return hasAtLeastOne ? null : { atLeastOneSocial: true };
   };
