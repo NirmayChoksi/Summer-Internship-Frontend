@@ -13,7 +13,7 @@
       <app-file-upload
         label="Upload company logo"
         [accept]="['.png', '.jpg', '.jpeg']"
-        [fileUrl]="profileForm.get('companyLogo')?.value"
+        [fileUrl]="companyLogoUrl()"
         (filesChange)="onCompanyLogoUpload($event)"
         (urlRemoved)="onCompanyLogoRemoved($event)"
       />

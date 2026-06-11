@@ -81,6 +81,11 @@ export const routes: Routes = [
           import('./pages/influencer/campaigns/campaigns.page').then((m) => m.CampaignsPage),
       },
       {
+        path: 'catalogue',
+        loadComponent: () =>
+          import('./pages/influencer/catalogue/catalogue.page').then((m) => m.CataloguePage),
+      },
+      {
         path: 'profile',
         loadComponent: () =>
           import('./pages/influencer/profile/profile.page').then((m) => m.ProfilePage),

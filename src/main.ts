@@ -12,12 +12,22 @@ import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
 import { apiResponseInterceptor } from './app/shared/interceptors/api-response-interceptor';
 import { authInterceptor } from './app/shared/interceptors/auth-interceptor';
+import { authErrorInterceptor } from './app/shared/interceptors/auth-error-interceptor';
+import { errorInterceptor } from './app/shared/interceptors/error-interceptor';
 
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
-    provideHttpClient(withFetch(), withInterceptors([authInterceptor, apiResponseInterceptor])),
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([
+        authInterceptor,
+        apiResponseInterceptor,
+        errorInterceptor,
+        authErrorInterceptor,
+      ]),
+    ),
   ],
 });

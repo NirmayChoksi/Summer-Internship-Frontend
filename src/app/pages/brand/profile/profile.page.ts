@@ -65,6 +65,7 @@ export class ProfilePage implements OnInit {
   private uploadService = inject(Upload);
 
   companyLogoFile: File | null = null;
+  companyLogoUrl = signal<string | null>(null);
   industryOptions: SelectOption[] = Object.entries(Industry).map(([key, value]) => ({
     label: key,
     value,
@@ -83,6 +84,7 @@ export class ProfilePage implements OnInit {
       if (profile) {
         this.isEditMode.set(true);
         this.profileId = profile._id;
+        this.companyLogoUrl.set(profile.companyLogoUrl);
         this.patchForm(profile);
       }
     });
@@ -140,6 +142,8 @@ export class ProfilePage implements OnInit {
   }
 
   onCompanyLogoRemoved(value: string | string[] | null) {
+    this.companyLogoUrl.set(null);
+
     this.profileForm.patchValue({
       companyLogo: value,
     });

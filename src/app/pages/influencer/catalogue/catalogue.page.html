@@ -1,0 +1,90 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    @if (isSelectionMode()) {
+      <ion-title>
+        {{ selectedCatalogueIds().size }}
+        selected
+      </ion-title>
+
+      <ion-buttons slot="end">
+        <app-button [iconOnly]="true" color="danger" iconStart="trash-outline" (click)="deleteSelected()" />
+
+        <app-button [iconOnly]="true" iconStart="close-outline" (click)="cancelSelection()" />
+      </ion-buttons>
+    } @else {
+      <ion-title>Catalogue</ion-title>
+
+      <ion-buttons slot="end">
+        <app-button [iconOnly]="true" fill="ghost" iconStart="add-outline" (click)="addCatalogue()" />
+      </ion-buttons>
+    }
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="catalogue-grid">
+    @for (item of catalogues(); track item._id) {
+      <div
+        class="catalogue-item"
+        (mousedown)="onPressStart(item)"
+        (mouseup)="onPressEnd()"
+        (mouseleave)="onPressEnd()"
+        (touchstart)="onPressStart(item)"
+        (touchend)="onPressEnd()"
+        (click)="onCatalogueClick(item)"
+      >
+        @if (item.type.startsWith('image/')) {
+          <img [src]="item.thumbnailUrl ?? item.url" [alt]="item.name" />
+        } @else if (item.type.startsWith('video/')) {
+          <div class="video-thumbnail">
+            <img [src]="item.thumbnailUrl ?? item.url" />
+            <ion-icon name="play-circle" class="play-icon"></ion-icon>
+          </div>
+        }
+
+        @if (selectedCatalogueIds().has(item._id)) {
+          <div class="selection-overlay">
+            <ion-icon name="checkmark-circle"></ion-icon>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</ion-content>
+
+<ion-modal [isOpen]="isPreviewModalOpen()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>
+          {{ selectedCatalogue()?.name }}
+        </ion-title>
+
+        <ion-buttons slot="end">
+          <app-button
+            [iconOnly]="true"
+            fill="ghost"
+            color="danger"
+            iconStart="close-outline"
+            type="button"
+            (click)="closePreviewModal()"
+          />
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="ion-padding">
+      @if (selectedCatalogue(); as catalogue) {
+        @if (catalogue.type.startsWith('image/')) {
+          <img [src]="catalogue.url" [alt]="catalogue.name" class="preview-image" />
+        }
+
+        @if (catalogue.type.startsWith('video/')) {
+          <video class="preview-video" controls autoplay playsinline>
+            <source [src]="catalogue.url" [type]="catalogue.type" />
+          </video>
+        }
+      }
+    </ion-content>
+  </ng-template>
+</ion-modal>

@@ -9,6 +9,7 @@ export interface BrandProfile {
   _id: string;
   user: any;
   companyLogo: string;
+  companyLogoUrl: string;
   companyName: string;
   description: string;
   website: string;
@@ -19,6 +20,6 @@ export interface BrandProfile {
   contactNumber: string;
 }
 
-export type CreateBrandProfile = Omit<BrandProfile, '_id' | 'user'>;
+export type CreateBrandProfile = Omit<BrandProfile, '_id' | 'user' | 'companyLogoUrl'>;
 
 export type UpdateBrandProfile = Partial<BrandProfile>;

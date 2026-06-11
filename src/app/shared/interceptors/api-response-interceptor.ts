@@ -16,19 +16,5 @@ export const apiResponseInterceptor: HttpInterceptorFn = (req, next) => {
 
       return event;
     }),
-
-    catchError((error: HttpErrorResponse) => {
-      let message = 'Something went wrong';
-
-      if (error.error?.error) {
-        message = error.error.error;
-      }
-
-      if (error.status === 401) {
-        console.error('Unauthorized');
-      }
-
-      return throwError(() => new Error(message));
-    }),
   );
 };
