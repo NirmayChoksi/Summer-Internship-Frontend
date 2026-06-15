@@ -1,20 +1,24 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     @if (isSelectionMode()) {
-      <ion-title>
-        {{ selectedCatalogueIds().size }}
-        selected
-      </ion-title>
+      <ion-title> {{ selectedCatalogueIds().size }} selected </ion-title>
 
       <ion-buttons slot="end">
         <app-button [iconOnly]="true" color="danger" iconStart="trash-outline" (click)="deleteSelected()" />
 
         <app-button [iconOnly]="true" iconStart="close-outline" (click)="cancelSelection()" />
       </ion-buttons>
+    } @else if (showInstagramMedia()) {
+      <ion-title>Instagram Media</ion-title>
+
+      <ion-buttons slot="end">
+        <app-button [iconOnly]="true" iconStart="close-outline" (click)="closeInstagramMedia()" />
+      </ion-buttons>
     } @else {
       <ion-title>Catalogue</ion-title>
 
       <ion-buttons slot="end">
+        <app-button [iconOnly]="true" fill="ghost" iconStart="logo-instagram" (click)="getInstagramMedia()" />
         <app-button [iconOnly]="true" fill="ghost" iconStart="add-outline" (click)="addCatalogue()" />
       </ion-buttons>
     }
@@ -23,31 +27,45 @@
 
 <ion-content [fullscreen]="true" class="ion-padding">
   <div class="catalogue-grid">
-    @for (item of catalogues(); track item._id) {
-      <div
-        class="catalogue-item"
-        (mousedown)="onPressStart(item)"
-        (mouseup)="onPressEnd()"
-        (mouseleave)="onPressEnd()"
-        (touchstart)="onPressStart(item)"
-        (touchend)="onPressEnd()"
-        (click)="onCatalogueClick(item)"
-      >
-        @if (item.type.startsWith('image/')) {
-          <img [src]="item.thumbnailUrl ?? item.url" [alt]="item.name" />
-        } @else if (item.type.startsWith('video/')) {
-          <div class="video-thumbnail">
-            <img [src]="item.thumbnailUrl ?? item.url" />
-            <ion-icon name="play-circle" class="play-icon"></ion-icon>
-          </div>
-        }
-
-        @if (selectedCatalogueIds().has(item._id)) {
-          <div class="selection-overlay">
-            <ion-icon name="checkmark-circle"></ion-icon>
-          </div>
-        }
-      </div>
+    @if (showInstagramMedia()) {
+      @for (item of instagramMedia(); track item.id) {
+        <div class="catalogue-item">
+          @if (item.type === 'IMAGE') {
+            <img [src]="item.mediaUrl" [alt]="item.type" />
+          } @else if (item.type === 'VIDEO') {
+            <div class="video-thumbnail">
+              <img [src]="item.thumbnailUrl" />
+              <ion-icon name="play-circle" class="play-icon"></ion-icon>
+            </div>
+          }
+        </div>
+      }
+    } @else {
+      @for (item of catalogues(); track item._id) {
+        <div
+          class="catalogue-item"
+          (mousedown)="onPressStart(item)"
+          (mouseup)="onPressEnd()"
+          (mouseleave)="onPressEnd()"
+          (touchstart)="onPressStart(item)"
+          (touchend)="onPressEnd()"
+          (click)="onCatalogueClick(item)"
+        >
+          @if (item.type.startsWith('image/')) {
+            <img [src]="item.thumbnailUrl ?? item.url" [alt]="item.name" />
+          } @else if (item.type.startsWith('video/')) {
+            <div class="video-thumbnail">
+              <img [src]="item.thumbnailUrl ?? item.url" />
+              <ion-icon name="play-circle" class="play-icon"></ion-icon>
+            </div>
+          }
+          @if (selectedCatalogueIds().has(item._id)) {
+            <div class="selection-overlay">
+              <ion-icon name="checkmark-circle"></ion-icon>
+            </div>
+          }
+        </div>
+      }
     }
   </div>
 </ion-content>
@@ -56,9 +74,7 @@
   <ng-template>
     <ion-header>
       <ion-toolbar>
-        <ion-title>
-          {{ selectedCatalogue()?.name }}
-        </ion-title>
+        <ion-title> {{ selectedCatalogue()?.name }} </ion-title>
 
         <ion-buttons slot="end">
           <app-button
@@ -78,7 +94,6 @@
         @if (catalogue.type.startsWith('image/')) {
           <img [src]="catalogue.url" [alt]="catalogue.name" class="preview-image" />
         }
-
         @if (catalogue.type.startsWith('video/')) {
           <video class="preview-video" controls autoplay playsinline>
             <source [src]="catalogue.url" [type]="catalogue.type" />

@@ -35,7 +35,7 @@ import { BrandProfile, CreateBrandProfile } from './models/interfaces';
 import { BrandProfileService } from './services/brand-profile';
 
 @Component({
-  selector: 'brand-profile',
+  selector: 'app-brand-profile',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],

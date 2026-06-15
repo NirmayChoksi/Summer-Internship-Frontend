@@ -34,7 +34,7 @@ import { CampaignService } from 'src/app/shared/services/campaign';
 import { Industry } from '../../brand/profile/models/enums';
 
 @Component({
-  selector: 'app-campaigns',
+  selector: 'app-influencer-campaigns',
   templateUrl: './campaigns.page.html',
   styleUrls: ['./campaigns.page.scss'],
   standalone: true,

@@ -1,13 +1,10 @@
-import { Niche, Platform } from './enums';
-
-type PlatformName = Lowercase<Platform>;
+import { Niche } from './enums';
 
 export interface PlatformStats {
   username: string;
   followers: number;
+  token?: string;
 }
-
-type Platforms = Partial<Record<PlatformName, PlatformStats>>;
 
 export interface InfluencerProfile {
   _id: string;
@@ -15,7 +12,9 @@ export interface InfluencerProfile {
   bio: string;
   niche: Niche[];
   country: string;
-  platforms: Platforms;
+  instagram: PlatformStats;
+  twitter?: PlatformStats;
+  youtube?: PlatformStats;
   pastWorks: string[];
   firstName: string;
   lastName: string;

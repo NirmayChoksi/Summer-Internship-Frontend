@@ -1,6 +1,12 @@
 import { Component, computed, forwardRef, input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IonIcon, IonLabel, IonNote, IonTextarea } from '@ionic/angular/standalone';
+import {
+  IonIcon,
+  IonLabel,
+  IonNote,
+  IonTextarea,
+  TextareaCustomEvent,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { alertCircleOutline } from 'ionicons/icons';
 import { FormValueAccessor } from 'src/app/shared/utils/form-value-accessor';
@@ -45,7 +51,7 @@ export class TextAreaComponent extends FormValueAccessor<string> {
     return (this.value()?.length ?? 0) >= max;
   });
 
-  onInput(e: any): void {
+  onInput(e: TextareaCustomEvent): void {
     this.setValue(e.detail.value ?? '');
   }
 

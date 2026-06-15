@@ -1,6 +1,13 @@
 import { Component, forwardRef, input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IonIcon, IonLabel, IonNote, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
+import {
+  IonIcon,
+  IonLabel,
+  IonNote,
+  IonSelect,
+  IonSelectOption,
+  SelectCustomEvent,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { alertCircleOutline } from 'ionicons/icons';
 import { FormValueAccessor } from 'src/app/shared/utils/form-value-accessor';
@@ -33,7 +40,7 @@ export class SelectComponent extends FormValueAccessor<any> {
     addIcons({ alertCircleOutline });
   }
 
-  onSelect(e: any): void {
+  onSelect(e: SelectCustomEvent): void {
     this.markTouched();
     this.setValue(e.detail.value);
   }

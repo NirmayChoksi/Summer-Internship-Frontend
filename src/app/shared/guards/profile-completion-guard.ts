@@ -13,9 +13,11 @@ export const profileCompletionGuard: CanActivateFn = (route, state) => {
 
   if (user.isProfileComplete) return true;
 
+  const urlPath = state.url.split('?')[0];
+
   const allowedRoutes = ['/brand/profile', '/influencer/profile'];
 
-  if (allowedRoutes.includes(state.url)) return true;
+  if (allowedRoutes.includes(urlPath)) return true;
 
   switch (user.role) {
     case UserRole.Brand:

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Platform } from './platform';
+import { SocialMedia } from './social-media';
 
-describe('Platform', () => {
-  let service: Platform;
+describe('SocialMedia', () => {
+  let service: SocialMedia;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(Platform);
+    service = TestBed.inject(SocialMedia);
   });
 
   it('should be created', () => {

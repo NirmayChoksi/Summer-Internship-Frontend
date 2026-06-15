@@ -28,9 +28,9 @@
           <app-campaign-card [campaign]="campaign" (click)="openCampaignDetailsModal(campaign._id)"></app-campaign-card>
         } @empty {
           <div class="ion-text-center hp-100 ion-flex-row ion-justify-content-center ion-align-items-center">
-            <ion-text color="medium" class="fs-28"
-              >No campaigns found. Create your first campaign to get started.</ion-text
-            >
+            <ion-text color="medium" class="fs-28">
+              No campaigns found. Create your first campaign to get started.
+            </ion-text>
           </div>
         }
         <ion-infinite-scroll (ionInfinite)="loadMoreCampaigns($event)" [disabled]="!hasNextPage()">
@@ -194,9 +194,7 @@
                   </div>
                   <div class="ion-flex-row ion-justify-content-between">
                     <span>Status</span>
-                    <ion-chip color="primary">
-                      {{ campaign.status | titlecase }}
-                    </ion-chip>
+                    <ion-chip color="primary"> {{ campaign.status | titlecase }} </ion-chip>
                   </div>
                   <div class="ion-flex-row ion-justify-content-between">
                     <span>Accepted Influencers</span>

@@ -47,20 +47,19 @@ import {
   SelectOption,
 } from 'src/app/shared/components/form-inputs/select/select.component';
 import { TextAreaComponent } from 'src/app/shared/components/form-inputs/text-area/text-area.component';
-import { CampaignStatus, InfluencerCampaignStatus } from 'src/app/shared/models/enums';
+import { CampaignStatus, InfluencerCampaignStatus, Platform } from 'src/app/shared/models/enums';
 import { BrandCampaign, CreateCampaign } from 'src/app/shared/models/interfaces';
 import { CampaignService } from 'src/app/shared/services/campaign';
 import {
   dateRangeValidator,
   endDateAfterStartDateValidator,
 } from 'src/app/shared/validators/date.validators';
-import { Platform } from '../../influencer/profile/models/enums';
 import { Industry } from '../profile/models/enums';
 import { BrandProfile } from '../profile/models/interfaces';
 import { BrandProfileService } from '../profile/services/brand-profile';
 
 @Component({
-  selector: 'brand-campaigns',
+  selector: 'app-brand-campaigns',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './campaigns.page.html',
   styleUrls: ['./campaigns.page.scss'],

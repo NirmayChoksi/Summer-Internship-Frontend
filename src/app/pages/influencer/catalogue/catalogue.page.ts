@@ -16,11 +16,12 @@ import {
   addOutline,
   checkmarkCircle,
   closeOutline,
+  logoInstagram,
   playCircle,
   trashOutline,
 } from 'ionicons/icons';
 import { ButtonComponent } from 'src/app/shared/components/form-inputs/button/button.component';
-import { Catalogue } from './model/interfaces';
+import { Catalogue, InstagramMedia } from './model/interfaces';
 import { CatalogueService } from './services/catalogue';
 
 @Component({
@@ -48,12 +49,21 @@ export class CataloguePage implements OnInit {
 
   catalogues = signal<Catalogue[]>([]);
   selectedCatalogue = signal<Catalogue | null>(null);
-  isPreviewModalOpen = signal(false);
-  isSelectionMode = signal(false);
+  isPreviewModalOpen = signal<boolean>(false);
+  isSelectionMode = signal<boolean>(false);
   selectedCatalogueIds = signal<Set<string>>(new Set());
+  showInstagramMedia = signal<boolean>(false);
+  instagramMedia = signal<InstagramMedia[]>([]);
 
   constructor() {
-    addIcons({ addOutline, playCircle, closeOutline, checkmarkCircle, trashOutline });
+    addIcons({
+      addOutline,
+      checkmarkCircle,
+      closeOutline,
+      logoInstagram,
+      playCircle,
+      trashOutline,
+    });
   }
 
   ngOnInit() {
@@ -179,5 +189,18 @@ export class CataloguePage implements OnInit {
       },
       error: console.error,
     });
+  }
+
+  getInstagramMedia() {
+    this.catalogueService.getInstagramMedia().subscribe({
+      next: (res) => {
+        this.showInstagramMedia.set(true);
+        this.instagramMedia.set(res.media);
+      },
+    });
+  }
+
+  closeInstagramMedia() {
+    this.showInstagramMedia.set(false);
   }
 }

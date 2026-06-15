@@ -1,6 +1,15 @@
 import { Component, computed, forwardRef, input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IonCheckbox, IonIcon, IonItem, IonLabel, IonNote, IonList, IonText } from '@ionic/angular/standalone';
+import {
+  CheckboxCustomEvent,
+  IonCheckbox,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonNote,
+  IonText,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { alertCircleOutline } from 'ionicons/icons';
 import { FormValueAccessor } from 'src/app/shared/utils/form-value-accessor';
@@ -21,7 +30,7 @@ export interface CheckboxOption {
       multi: true,
     },
   ],
-  imports: [IonCheckbox, IonIcon, IonItem, IonLabel, IonNote, IonList, IonText],
+  imports: [IonCheckbox, IonIcon, IonItem, IonLabel, IonList, IonNote, IonText],
 })
 export class CheckboxGroupComponent extends FormValueAccessor<any[]> {
   options = input<CheckboxOption[]>([]);
@@ -39,7 +48,7 @@ export class CheckboxGroupComponent extends FormValueAccessor<any[]> {
     return (this.value() ?? []).includes(val);
   });
 
-  onCheck(e: any, optValue: any): void {
+  onCheck(e: CheckboxCustomEvent, optValue: any): void {
     const current = [...(this.value() ?? [])];
 
     if (e.detail.checked) {

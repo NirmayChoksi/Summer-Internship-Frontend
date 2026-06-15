@@ -1,8 +1,7 @@
 import { Industry } from 'src/app/pages/brand/profile/models/enums';
 import { BrandProfile } from 'src/app/pages/brand/profile/models/interfaces';
-import { Platform } from 'src/app/pages/influencer/profile/models/enums';
 import { InfluencerProfile } from 'src/app/pages/influencer/profile/models/interfaces';
-import { CampaignStatus, InfluencerCampaignStatus } from './enums';
+import { CampaignStatus, InfluencerCampaignStatus, Platform } from './enums';
 
 export interface ApiSuccessResponse<T> {
   success: true;

@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Catalogue } from '../model/interfaces';
 import { InfluencerEndpoints } from '../../models/constants';
+import { Catalogue, InstagramMedia } from '../model/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +21,16 @@ export class CatalogueService {
 
   getMyCatalogues() {
     return this.http.get<{ message: string; catalogues: Catalogue[] }>(`${this.baseUrl}`);
+  }
+
+  getInstagramMedia() {
+    return this.http.get<{
+      media: InstagramMedia[];
+      pagination: {
+        nextCursor: string;
+        hasNextPage: boolean;
+      };
+    }>(`${this.baseUrl}${InfluencerEndpoints.catalogue.instagramMedia}`);
   }
 
   deleteCatalogue(catalogueId: string) {

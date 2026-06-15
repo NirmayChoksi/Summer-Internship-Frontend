@@ -1,6 +1,15 @@
 import { Component, forwardRef, input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IonIcon, IonItem, IonLabel, IonNote, IonRadio, IonRadioGroup, IonText } from '@ionic/angular/standalone';
+import {
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonNote,
+  IonRadio,
+  IonRadioGroup,
+  IonText,
+  RadioGroupCustomEvent,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { alertCircleOutline } from 'ionicons/icons';
 import { FormValueAccessor } from 'src/app/shared/utils/form-value-accessor';
@@ -31,7 +40,7 @@ export class RadioButtonComponent extends FormValueAccessor<any> {
     addIcons({ alertCircleOutline });
   }
 
-  onSelect(e: any): void {
+  onSelect(e: RadioGroupCustomEvent): void {
     this.markTouched();
     this.setValue(e.detail.value);
   }

@@ -10,3 +10,8 @@ export const CampaignEndpoints = {
   applications: '/applications',
   influencerStatus: '/influencer/status',
 };
+
+export const InstagramEndpoints = {
+  base: '/instagram',
+  exchange: '/exchange',
+};

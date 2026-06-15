@@ -9,3 +9,9 @@ export enum InfluencerCampaignStatus {
   Accepted = 'ACCEPTED',
   Rejected = 'REJECTED',
 }
+
+export enum Platform {
+  Instagram = 'INSTAGRAM',
+  Twitter = 'TWITTER',
+  Youtube = 'YOUTUBE',
+}

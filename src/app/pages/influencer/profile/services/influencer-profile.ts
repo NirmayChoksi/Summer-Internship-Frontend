@@ -43,8 +43,18 @@ export class InfluencerProfileService {
 
   getInfluencerProfileByUserId() {
     return this.http
-      .get<{ message: string; profile: InfluencerProfile }>(`${this.baseUrl}/user`)
+      .get<{
+        message: string;
+        profile: InfluencerProfile;
+      }>(`${this.baseUrl}${InfluencerEndpoints.profile.user}`)
       .pipe(tap(({ profile }) => this.profile.set(profile)));
+  }
+
+  refreshInstagramFollowers() {
+    return this.http.patch<{ followers: number }>(
+      `${this.baseUrl}${InfluencerEndpoints.profile.refreshInstagramFollowers}`,
+      {},
+    );
   }
 
   updateInfluencerProfile(profileId: string, data: UpdateInfluencerProfile) {

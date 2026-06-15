@@ -1,6 +1,12 @@
 import { Component, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IonCheckbox, IonIcon, IonLabel, IonNote } from '@ionic/angular/standalone';
+import {
+  CheckboxCustomEvent,
+  IonCheckbox,
+  IonIcon,
+  IonLabel,
+  IonNote,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { alertCircleOutline } from 'ionicons/icons';
 import { FormValueAccessor } from 'src/app/shared/utils/form-value-accessor';
@@ -24,7 +30,7 @@ export class CheckboxComponent extends FormValueAccessor<boolean> {
     addIcons({ alertCircleOutline });
   }
 
-  onChange(e: any): void {
+  onChange(e: CheckboxCustomEvent): void {
     this.markTouched();
     this.setValue(e.detail.checked);
   }
