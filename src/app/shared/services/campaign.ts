@@ -5,10 +5,13 @@ import { CampaignEndpoints } from '../models/constants';
 import {
   BrandCampaign,
   Campaign,
+  CaptionResult,
   ChangeInfluencerStatus,
   CreateCampaign,
   InfluencerCampaign,
   Pagination,
+  RefineCaption,
+  SubmitCampaignPost,
   UpdateCampaign,
 } from '../models/interfaces';
 
@@ -89,5 +92,32 @@ export class CampaignService {
 
   deleteCampaign(campaignId: string) {
     return this.http.delete<{ message: string }>(`${this.baseUrl}/${campaignId}`);
+  }
+
+  generateCaption(campaignId: string, file: File, userText: string | null) {
+    const formData = new FormData();
+
+    formData.append('post', file);
+
+    if (userText) formData.append('userText', userText);
+
+    return this.http.post<CaptionResult>(
+      `${this.baseUrl}/${campaignId}${CampaignEndpoints.generateCaption}`,
+      formData,
+    );
+  }
+
+  refineCaption(campaignId: string, payload: RefineCaption) {
+    return this.http.patch<{ message: string; caption: string }>(
+      `${this.baseUrl}/${campaignId}${CampaignEndpoints.refineCaption}`,
+      payload,
+    );
+  }
+
+  submitPost(campaignId: string, data: SubmitCampaignPost) {
+    return this.http.post<{ message: string; campaign: InfluencerCampaign }>(
+      `${this.baseUrl}/${campaignId}${CampaignEndpoints.submitPost}`,
+      data,
+    );
   }
 }

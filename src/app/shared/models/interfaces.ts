@@ -21,11 +21,17 @@ export interface TabOptions {
   route: string;
 }
 
+export interface CampaignPost {
+  mediaId: string;
+  caption: string;
+  submittedAt: string;
+}
+
 export interface CampaignInfluencer {
   profile: Omit<InfluencerProfile, 'user'>;
   status: InfluencerCampaignStatus;
+  post?: CampaignPost;
 }
-
 export interface Campaign {
   _id: string;
   brand: Omit<BrandProfile, 'user'>;
@@ -68,4 +74,25 @@ export interface Pagination {
   totalPages: number;
   hasNextPage: boolean;
   hasPreviousPage: boolean;
+}
+
+export interface Caption {
+  tone: string;
+  caption: string;
+}
+
+export interface CaptionResult {
+  captions: Caption[];
+  hashtags: string[];
+}
+
+export interface SubmitCampaignPost {
+  caption: string;
+  imageUrl?: string;
+  videoUrl?: string;
+}
+
+export interface RefineCaption {
+  caption: string;
+  instruction: string;
 }

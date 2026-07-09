@@ -1,7 +1,7 @@
 export const UploadEndpoints = {
   base: '/upload',
   companyLogo: '/company-logo',
-  post:'/post'
+  post: '/post',
 };
 
 export const CampaignEndpoints = {
@@ -10,6 +10,9 @@ export const CampaignEndpoints = {
   getCampaignsByInfluencerId: '/influencer',
   applications: '/applications',
   influencerStatus: '/influencer/status',
+  generateCaption: '/post/caption',
+  refineCaption: '/post/caption',
+  submitPost: '/post',
 };
 
 export const InstagramEndpoints = {

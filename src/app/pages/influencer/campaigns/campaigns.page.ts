@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, computed, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit, signal } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   InfiniteScrollCustomEvent,
   IonButtons,
@@ -23,15 +23,26 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { closeOutline, enterOutline, exitOutline, filterCircleOutline } from 'ionicons/icons';
-import { finalize } from 'rxjs';
+import {
+  closeOutline,
+  enterOutline,
+  exitOutline,
+  filterCircleOutline,
+  logoInstagram,
+  sparklesOutline,
+} from 'ionicons/icons';
+import { finalize, switchMap } from 'rxjs';
 import { CampaignCardComponent } from 'src/app/shared/components/cards/campaign-card/campaign-card.component';
 import { ButtonComponent } from 'src/app/shared/components/form-inputs/button/button.component';
+import { FileUploadComponent } from 'src/app/shared/components/form-inputs/file-upload/file-upload.component';
 import { SelectOption } from 'src/app/shared/components/form-inputs/select/select.component';
+import { TextAreaComponent } from 'src/app/shared/components/form-inputs/text-area/text-area.component';
 import { CampaignStatus, InfluencerCampaignStatus } from 'src/app/shared/models/enums';
-import { InfluencerCampaign } from 'src/app/shared/models/interfaces';
+import { InfluencerCampaign, SubmitCampaignPost } from 'src/app/shared/models/interfaces';
 import { CampaignService } from 'src/app/shared/services/campaign';
+import { Upload } from 'src/app/shared/services/upload';
 import { Industry } from '../../brand/profile/models/enums';
+import { Caption } from '../models/interfaces';
 
 @Component({
   selector: 'app-influencer-campaigns',
@@ -61,17 +72,25 @@ import { Industry } from '../../brand/profile/models/enums';
     IonText,
     IonTitle,
     IonToolbar,
+    ReactiveFormsModule,
+    FileUploadComponent,
+    TextAreaComponent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CampaignsPage implements OnInit {
   private campaignService = inject(CampaignService);
+  private fb = inject(FormBuilder);
+  private uploadService = inject(Upload);
 
   isCampaignDetailsModalOpen = signal<boolean>(false);
+  isPublishMediaModalOpen = signal<boolean>(false);
   campaigns = signal<InfluencerCampaign[]>([]);
   isLoadingCampaigns = signal<boolean>(false);
   selectedCampaign = signal<InfluencerCampaign | null>(null);
   campaignStatus = CampaignStatus;
   influencerStatus = InfluencerCampaignStatus;
+  postForm!: FormGroup;
   industryOptions = signal<SelectOption[]>([
     { label: 'All', value: null },
     ...Object.entries(Industry).map(([key, value]) => ({
@@ -93,6 +112,19 @@ export class CampaignsPage implements OnInit {
   limit = 10;
   hasNextPage = signal(true);
   isLoadingMore = signal(false);
+  mediaUrl = signal<string | null>(null);
+  mediaFile = signal<File | null>(null);
+  isLoading = signal<boolean>(false);
+  isVideo = computed(() => this.mediaFile()?.type.startsWith('video/') ?? false);
+  captions = signal<Caption[]>([]);
+  didSelectCaption = signal<boolean>(false);
+  refineOptions = signal<{ label: string; instruction: string }[]>([
+    { label: 'Shorter', instruction: 'Make this caption shorter' },
+    { label: 'Longer', instruction: 'Make this caption longer' },
+    { label: 'Add Emojis', instruction: 'Add relevant Emojis' },
+    { label: 'Engaging', instruction: 'Make it more engaging' },
+    { label: 'Professional', instruction: 'Rewrite in a professional tone' },
+  ]);
 
   filters = computed(() => ({
     industry: this.selectedIndustry(),
@@ -104,7 +136,14 @@ export class CampaignsPage implements OnInit {
   }));
 
   constructor() {
-    addIcons({ closeOutline, exitOutline, enterOutline, filterCircleOutline });
+    addIcons({
+      closeOutline,
+      exitOutline,
+      enterOutline,
+      filterCircleOutline,
+      logoInstagram,
+      sparklesOutline,
+    });
   }
 
   ngOnInit(): void {
@@ -203,6 +242,20 @@ export class CampaignsPage implements OnInit {
     this.isCampaignDetailsModalOpen.set(false);
   }
 
+  openPublishMediaModal() {
+    if (!this.postForm) this.postForm = this.initializePostForm();
+
+    this.isPublishMediaModalOpen.set(true);
+  }
+
+  closePublishMediaModal() {
+    this.isPublishMediaModalOpen.set(false);
+  }
+
+  private initializePostForm() {
+    return this.fb.group({ caption: [''] });
+  }
+
   async canDismiss(_data?: undefined, role?: string) {
     return role !== 'gesture';
   }
@@ -239,5 +292,105 @@ export class CampaignsPage implements OnInit {
       },
       error: (err) => console.error(err),
     });
+  }
+
+  onMediaUpload(files: File[]) {
+    this.mediaFile.set(files[0] ?? null);
+  }
+
+  onMediaRemoved() {
+    this.resetForm();
+  }
+
+  onSubmit() {
+    const file = this.mediaFile();
+    const campaign = this.selectedCampaign();
+
+    if (!campaign) return;
+
+    if (this.postForm.invalid || !file) return;
+
+    this.isLoading.set(true);
+    this.uploadService
+      .uploadPost(file)
+      .pipe(
+        finalize(() => this.isLoading.set(false)),
+        switchMap(({ url }) => {
+          const mediaPayload = this.isVideo() ? { videoUrl: url } : { imageUrl: url };
+
+          const payload: SubmitCampaignPost = {
+            ...this.postForm.getRawValue(),
+            ...mediaPayload,
+          };
+
+          return this.campaignService.submitPost(campaign._id, payload);
+        }),
+      )
+      .subscribe({
+        next: ({ message }) => {
+          console.log(message);
+
+          this.resetForm();
+
+          this.closePublishMediaModal();
+        },
+        error: (error) => console.error(error),
+      });
+  }
+
+  generateCaption() {
+    const campaign = this.selectedCampaign();
+
+    if (!campaign) return;
+
+    const captionControl = this.postForm.get('caption');
+    const file = this.mediaFile();
+
+    if (!file || !captionControl) return;
+
+    this.campaignService.generateCaption(campaign._id, file, captionControl.value).subscribe({
+      next: ({ captions }) => {
+        this.captions.set(captions);
+      },
+    });
+  }
+
+  refineCaption(instruction: string) {
+    const campaign = this.selectedCampaign();
+
+    if (!campaign) return;
+
+    const caption = this.postForm.get('caption')?.value;
+
+    if (!caption) return;
+
+    this.campaignService.refineCaption(campaign._id, { caption, instruction }).subscribe({
+      next: ({ caption }) => {
+        this.postForm.patchValue({
+          caption,
+        });
+      },
+      error: console.error,
+    });
+  }
+
+  selectCaption(caption: string) {
+    this.postForm.patchValue({
+      caption,
+    });
+
+    this.captions.set([]);
+    this.didSelectCaption.set(true);
+  }
+
+  private resetForm() {
+    this.postForm.reset({
+      caption: '',
+    });
+
+    this.mediaFile.set(null);
+    this.mediaUrl.set(null);
+    this.captions.set([]);
+    this.didSelectCaption.set(false);
   }
 }
