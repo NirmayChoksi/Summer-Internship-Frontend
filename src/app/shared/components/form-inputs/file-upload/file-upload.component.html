@@ -6,7 +6,9 @@
     (drop)="onDrop($event)"
     [class.drag-over]="isDragOver()"
     [class.ion-padding]="!(!multiple() && displayFiles().length && showPreview())"
-    class="dropzone w-150 h-150 ion-flex-column ion-align-items-center ion-justify-content-center ion-align-self-center"
+    [class.w-150]="!fullWidth()"
+    [class.wp-100]="fullWidth()"
+    class="dropzone h-150 ion-flex-column ion-align-items-center ion-justify-content-center ion-align-self-center"
     role="button"
     tabindex="0"
   >

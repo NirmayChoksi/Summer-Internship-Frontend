@@ -1,0 +1,18 @@
+<ion-card>
+  <ion-card-header>
+    <ion-skeleton-text animated class="w-50 h-20" />
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-grid>
+      <ion-row>
+        @for (item of [1, 2, 3, 4]; track item) {
+          <ion-col size="6">
+            <ion-skeleton-text animated class="w-50 h-24" />
+            <ion-skeleton-text animated class="w-75 h-16 mt-2" />
+          </ion-col>
+        }
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+</ion-card>

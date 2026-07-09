@@ -4,6 +4,7 @@ export interface PlatformStats {
   username: string;
   followers: number;
   token?: string;
+  userId?:string
 }
 
 export interface InfluencerProfile {

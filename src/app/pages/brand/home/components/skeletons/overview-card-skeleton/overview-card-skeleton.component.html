@@ -1,0 +1,29 @@
+<ion-card>
+  <ion-card-header>
+    <ion-skeleton-text animated class="w-40 h-20"> </ion-skeleton-text>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-grid>
+      @for (row of [1, 2]; track row) {
+        <ion-row>
+          @for (col of [1, 2]; track col) {
+            <ion-col size="6">
+              <div class="d-flex align-items-center gap-3">
+                <ion-skeleton-text animated class="w-32 h-32 rounded-circle"> </ion-skeleton-text>
+
+                <div>
+                  <ion-skeleton-text animated class="w-30 h-20"> </ion-skeleton-text>
+
+                  <ion-skeleton-text animated class="w-50 h-14 mt-2"> </ion-skeleton-text>
+                </div>
+              </div>
+            </ion-col>
+          }
+        </ion-row>
+      }
+    </ion-grid>
+
+    <ion-skeleton-text animated class="w-100 h-10 mt-4"> </ion-skeleton-text>
+  </ion-card-content>
+</ion-card>

@@ -1,0 +1,69 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title> Instagram Insights </ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <div class="metric">
+            <ion-icon color="primary" name="eye-outline"> </ion-icon>
+
+            <div>
+              <h2>
+                {{ reach() }}
+              </h2>
+
+              <small> Reach </small>
+            </div>
+          </div>
+        </ion-col>
+
+        <ion-col size="6">
+          <div class="metric">
+            <ion-icon color="warning" name="trending-up-outline"> </ion-icon>
+
+            <div>
+              <h2>
+                {{ impressions() }}
+              </h2>
+
+              <small> Impressions </small>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="6">
+          <div class="metric">
+            <ion-icon color="danger" name="heart-outline"> </ion-icon>
+
+            <div>
+              <h2>
+                {{ engagement() }}
+              </h2>
+
+              <small> Engagement </small>
+            </div>
+          </div>
+        </ion-col>
+
+        <ion-col size="6">
+          <div class="metric">
+            <ion-icon color="success" name="images-outline"> </ion-icon>
+
+            <div>
+              <h2>
+                {{ insights().totalPosts }}
+              </h2>
+
+              <small> Posts </small>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+</ion-card>

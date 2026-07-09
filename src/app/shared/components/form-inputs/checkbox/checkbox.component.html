@@ -1,13 +1,4 @@
 <div class="form-input">
-  @if (label()) {
-    <ion-label>
-      {{ label() }}
-      @if (isRequired()) {
-        <span aria-hidden="true"> *</span>
-      }
-    </ion-label>
-  }
-
   <ion-checkbox
     (ionChange)="onChange($event)"
     [checked]="value()"
@@ -16,7 +7,14 @@
     justify="start"
     labelPlacement="end"
   >
-    {{ placeholder() || label() }}
+    @if (label()) {
+      <ion-label>
+        {{ label() }}
+        @if (isRequired()) {
+          <span aria-hidden="true"> *</span>
+        }
+      </ion-label>
+    }
   </ion-checkbox>
 
   @if (hasError()) {

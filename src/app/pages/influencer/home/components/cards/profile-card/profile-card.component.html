@@ -1,0 +1,19 @@
+<ion-card>
+  <ion-card-content class="ion-flex-column gap-4">
+    <div class="ion-flex-row ion-align-items-center ion-justify-content-between">
+      <ion-label class="fs-24 fw-500" color="dark">
+        {{ fullName() }}
+      </ion-label>
+
+      <ion-icon class="fs-18" name="checkmark-circle" [color]="profile().isVerified ? 'primary' : 'medium'"> </ion-icon>
+    </div>
+
+    <div class="ion-flex-row flex-wrap gap-2">
+      @for (niche of profile().niche; track niche) {
+        <ion-chip outline="true" class="ion-no-margin">
+          {{ niche }}
+        </ion-chip>
+      }
+    </div>
+  </ion-card-content>
+</ion-card>

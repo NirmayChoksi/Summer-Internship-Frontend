@@ -1,0 +1,29 @@
+<ion-card>
+  <ion-card-header>
+    <ion-skeleton-text animated class="w-45 h-20"> </ion-skeleton-text>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-list lines="full">
+      @for (item of [1, 2, 3, 4]; track item) {
+        <ion-item>
+          <ion-avatar slot="start">
+            <ion-skeleton-text animated class="w-100 h-100"> </ion-skeleton-text>
+          </ion-avatar>
+
+          <ion-label>
+            <ion-skeleton-text animated class="w-50 h-18"> </ion-skeleton-text>
+
+            <ion-skeleton-text animated class="w-30 h-14 mt-2"> </ion-skeleton-text>
+
+            <ion-skeleton-text animated class="w-60 h-14 mt-2"> </ion-skeleton-text>
+          </ion-label>
+
+          <ion-chip slot="end">
+            <ion-skeleton-text animated class="w-60 h-16"> </ion-skeleton-text>
+          </ion-chip>
+        </ion-item>
+      }
+    </ion-list>
+  </ion-card-content>
+</ion-card>

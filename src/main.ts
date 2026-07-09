@@ -8,12 +8,15 @@ import {
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
 
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { register } from 'swiper/element/bundle';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
 import { apiResponseInterceptor } from './app/shared/interceptors/api-response-interceptor';
-import { authInterceptor } from './app/shared/interceptors/auth-interceptor';
 import { authErrorInterceptor } from './app/shared/interceptors/auth-error-interceptor';
+import { authInterceptor } from './app/shared/interceptors/auth-interceptor';
 import { errorInterceptor } from './app/shared/interceptors/error-interceptor';
+
+register();
 
 bootstrapApplication(AppComponent, {
   providers: [

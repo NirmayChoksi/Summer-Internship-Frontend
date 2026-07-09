@@ -1,6 +1,7 @@
 export const UploadEndpoints = {
   base: '/upload',
   companyLogo: '/company-logo',
+  post:'/post'
 };
 
 export const CampaignEndpoints = {

@@ -80,8 +80,8 @@ export class CampaignsPage implements OnInit {
     })),
   ]);
   selectedIndustry = signal<Industry | null>(null);
-  budgetOption = signal<{ min: number; max: number }>({ min: 0, max: 10000 });
-  selectedBudget = signal<{ lower: number; upper: number }>({ lower: 0, upper: 10000 });
+  budgetOption = signal<{ min: number; max: number }>({ min: 0, max: 100000 });
+  selectedBudget = signal<{ lower: number; upper: number }>({ lower: 0, upper: 100000 });
   platformOptions = signal<SelectOption[]>([
     { label: 'All', value: null },
     { label: 'Instagram', value: 'Instagram' },

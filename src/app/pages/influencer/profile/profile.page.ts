@@ -90,6 +90,10 @@ export class ProfilePage implements OnInit {
       tokenControl?.clearValidators();
       tokenControl?.updateValueAndValidity();
 
+      const userIdControl = this.profileForm.get('instagram.userId');
+      userIdControl?.clearValidators();
+      userIdControl?.updateValueAndValidity();
+
       this.patchForm(profile);
     });
   }
@@ -179,6 +183,7 @@ export class ProfilePage implements OnInit {
         username: [{ value: '', disabled: true }, Validators.required],
         followers: [{ value: 0, disabled: true }, Validators.required],
         token: ['', Validators.required],
+        userId: ['', Validators.required],
       }),
 
       twitter: this.createSocialGroup(),
@@ -238,9 +243,10 @@ export class ProfilePage implements OnInit {
 
             this.profileForm.patchValue({
               instagram: {
-                username: profile.username,
                 followers: profile.followers,
                 token,
+                userId: profile.id,
+                username: profile.username,
               },
             });
 

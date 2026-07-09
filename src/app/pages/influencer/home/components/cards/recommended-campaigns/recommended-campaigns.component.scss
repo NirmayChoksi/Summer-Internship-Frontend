@@ -1,0 +1,59 @@
+.section-header {
+  padding: 0 16px;
+  margin-bottom: 8px;
+}
+
+.section-header h2 {
+  margin: 0;
+}
+
+.campaign-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+
+  padding: 0 16px 4px;
+
+  scroll-snap-type: x mandatory;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+ion-card {
+  min-width: 300px;
+  scroll-snap-align: start;
+  margin: 0;
+}
+
+.brand-logo {
+  width: 44px;
+  height: 44px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+}
+
+.description {
+  color: var(--ion-color-medium);
+
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.info-row div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}

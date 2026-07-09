@@ -1,0 +1,52 @@
+<ion-card>
+  <ion-card-header>
+    <div class="d-flex justify-content-between align-items-center">
+      <ion-card-title> Active Campaigns </ion-card-title>
+
+      @if (campaigns().length) {
+        <ion-button fill="clear" size="small" (click)="viewAll.emit()"> View All </ion-button>
+      }
+    </div>
+  </ion-card-header>
+
+  <ion-card-content>
+    @if (campaigns().length) {
+      @for (campaign of campaigns(); track campaign._id) {
+        <div class="campaign" (click)="open(campaign._id)">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <h2>
+                {{ campaign.title }}
+              </h2>
+
+              <ion-chip> ₹{{ campaign.payout | number }} </ion-chip>
+            </div>
+
+            <div class="text-end">
+              <small> {{ campaign.acceptedInfluencersCount }} / {{ campaign.maximumInfluencers }} </small>
+              <p>Creators</p>
+            </div>
+          </div>
+
+          <ion-progress-bar class="mt-3" [value]="progress(campaign)"> </ion-progress-bar>
+
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <small class="text-medium">
+              <ion-icon name="calendar-outline"> </ion-icon>
+              Ends
+              {{ campaign.endDate | date: 'dd MMM' }}
+            </small>
+
+            <ion-icon name="arrow-forward-outline"> </ion-icon>
+          </div>
+        </div>
+      }
+    } @else {
+      <div class="empty">
+        <ion-icon name="people-outline" color="medium"> </ion-icon>
+        <h3>No Active Campaigns</h3>
+        <p>Create your first campaign to start receiving applications.</p>
+      </div>
+    }
+  </ion-card-content>
+</ion-card>

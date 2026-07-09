@@ -1,0 +1,16 @@
+<ion-card>
+  <ion-list lines="none">
+    @for (item of [1, 2, 3, 4]; track item) {
+      <ion-item>
+        <ion-label>
+          <ion-skeleton-text animated class="w-50 h-18" />
+          <ion-skeleton-text animated class="w-25 h-14 mt-2" />
+        </ion-label>
+
+        <ion-chip slot="end">
+          <ion-skeleton-text animated class="w-100 h-16" />
+        </ion-chip>
+      </ion-item>
+    }
+  </ion-list>
+</ion-card>

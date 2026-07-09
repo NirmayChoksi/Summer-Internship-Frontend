@@ -1,0 +1,57 @@
+<ion-card>
+  <ion-card-header>
+    <div class="d-flex justify-content-between align-items-center">
+      <ion-card-title> Recent Applications </ion-card-title>
+
+      @if (applications().length) {
+        <app-button fill="clear" size="small" (click)="viewAll.emit()" label="View All"> </app-button>
+      }
+    </div>
+  </ion-card-header>
+
+  <ion-card-content>
+    @if (applications().length) {
+      <ion-list lines="full">
+        @for (application of applications(); track application.campaignId) {
+          <ion-item button detail="false" (click)="open(application)">
+            <ion-avatar slot="start">
+              {{ initials(application) }}
+            </ion-avatar>
+
+            <ion-label>
+              <h2>
+                {{ application.influencer.firstName }}
+
+                {{ application.influencer.lastName }}
+              </h2>
+
+              <p>
+                {{ followers(application.influencer.instagram.followers) }}
+
+                Followers
+              </p>
+
+              <small>
+                Applied for
+
+                {{ application.campaignTitle }}
+              </small>
+            </ion-label>
+
+            <ion-badge slot="end" [color]="badgeColor(application.status)">
+              {{ application.status }}
+            </ion-badge>
+          </ion-item>
+        }
+      </ion-list>
+    } @else {
+      <div class="empty">
+        <ion-icon name="person-outline" color="medium"> </ion-icon>
+
+        <h3>No Applications Yet</h3>
+
+        <p>New creator applications will appear here.</p>
+      </div>
+    }
+  </ion-card-content>
+</ion-card>

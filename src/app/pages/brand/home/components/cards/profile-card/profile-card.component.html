@@ -1,0 +1,35 @@
+<ion-card>
+  <ion-card-content>
+    <div class="ion-flex-row ion-align-items-center">
+      <ion-avatar class="w-72 h-72 company-logo">
+        <img [src]="profile().companyLogoUrl" [alt]="profile().companyName" />
+      </ion-avatar>
+
+      <div class="ms-4 ion-flex-grow-1">
+        <h2 class="m-0">
+          {{ profile().companyName }}
+        </h2>
+
+        <p class="text-medium mt-1 mb-0">
+          {{ website() }}
+        </p>
+      </div>
+    </div>
+
+    <div class="ion-flex-row ion-flex-wrap gap-2 mt-4">
+      @for (industry of profile().industry; track industry) {
+        <ion-chip outline>
+          {{ industry }}
+        </ion-chip>
+      }
+    </div>
+
+    <div class="mt-4">
+      <small class="text-medium"> Contact Person </small>
+
+      <h3 class="m-0 mt-1">
+        {{ contactName() }}
+      </h3>
+    </div>
+  </ion-card-content>
+</ion-card>

@@ -1,7 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UploadEndpoints } from '../models/constants';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -20,5 +20,13 @@ export class Upload {
       `${this.baseUrl}${UploadEndpoints.companyLogo}`,
       formData,
     );
+  }
+
+  uploadPost(file: File) {
+    const formData = new FormData();
+
+    formData.append('post', file);
+
+    return this.http.post<{ url: string }>(`${this.baseUrl}${UploadEndpoints.post}`, formData);
   }
 }

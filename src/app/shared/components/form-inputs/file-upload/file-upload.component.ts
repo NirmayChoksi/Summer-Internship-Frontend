@@ -1,12 +1,12 @@
-import { Component, computed, input, output, signal, OnDestroy } from '@angular/core';
+import { Component, computed, input, OnDestroy, output, signal } from '@angular/core';
 
 import {
   IonFab,
   IonFabButton,
   IonIcon,
   IonLabel,
-  IonText,
   IonNote,
+  IonText,
 } from '@ionic/angular/standalone';
 
 import { addIcons } from 'ionicons';
@@ -14,7 +14,17 @@ import { addIcons } from 'ionicons';
 import { cameraOutline, closeOutline, documentOutline, imageOutline } from 'ionicons/icons';
 import { ButtonComponent } from '../button/button.component';
 
-type FileAccept = '.png' | '.jpg' | '.jpeg' | '.pdf';
+type FileAccept =
+  | '.avi'
+  | '.jpeg'
+  | '.jpg'
+  | '.mkv'
+  | '.mov'
+  | '.mp4'
+  | '.pdf'
+  | '.png'
+  | '.webm'
+  | '.webp';
 
 type UploadedFile = {
   file: File | null;
@@ -37,6 +47,7 @@ export class FileUploadComponent implements OnDestroy {
   maxFileSizeMB = input<number>(5);
   multiple = input<boolean>(false);
   showPreview = input<boolean>(true);
+  fullWidth = input<boolean>(false);
 
   filesChange = output<File[]>();
   urlRemoved = output<string[] | string | null>();

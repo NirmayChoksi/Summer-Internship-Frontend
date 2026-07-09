@@ -52,7 +52,7 @@ export class InfluencerProfileService {
 
   refreshInstagramFollowers() {
     return this.http.patch<{ followers: number }>(
-      `${this.baseUrl}${InfluencerEndpoints.profile.refreshInstagramFollowers}`,
+      `${this.baseUrl}${InfluencerEndpoints.profile.syncInstagramFollowers}`,
       {},
     );
   }

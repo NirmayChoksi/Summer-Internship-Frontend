@@ -1,0 +1,15 @@
+<div class="d-flex gap-3 overflow-auto px-3">
+  @for (item of [1, 2, 3]; track item) {
+    <ion-card class="min-w-250 flex-shrink-0">
+      <ion-card-content>
+        <ion-skeleton-text animated class="w-75 h-20" />
+        <ion-skeleton-text animated class="w-50 h-16 mt-2" />
+        <ion-skeleton-text animated class="w-25 h-16 mt-2" />
+
+        <ion-button expand="block" disabled class="mt-4">
+          <ion-skeleton-text animated class="w-100 h-16" />
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  }
+</div>

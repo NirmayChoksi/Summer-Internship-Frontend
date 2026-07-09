@@ -24,9 +24,9 @@
         <app-campaign-card [campaign]="campaign" (click)="openCampaignDetailsModal(campaign._id)"></app-campaign-card>
       } @empty {
         <div class="ion-text-center hp-100 ion-flex-row ion-justify-content-center ion-align-items-center">
-          <ion-text color="medium" class="fs-28"
-            >No campaigns found. Create your first campaign to get started.</ion-text
-          >
+          <ion-text color="medium" class="fs-28">
+            No campaigns found. Create your first campaign to get started.
+          </ion-text>
         </div>
       }
     </div>
@@ -53,8 +53,8 @@
     <ion-content class="ion-padding">
       @if (campaignForm) {
         <form
-          [formGroup]="campaignForm"
           (ngSubmit)="onSubmit()"
+          [formGroup]="campaignForm"
           class="ion-flex-column gap-24 hp-100 ion-justify-content-between"
         >
           <div class="ion-flex-column gap-16">
@@ -67,19 +67,19 @@
             <div class="ion-flex-column gap-8">
               <div class="ion-flex-row gap-16">
                 <app-date-picker
-                  label="Start Date"
-                  formControlName="startDate"
                   [min]="today()"
-                  presentation="date"
                   class="wp-100"
+                  formControlName="startDate"
+                  label="Start Date"
+                  presentation="date"
                 />
 
                 <app-date-picker
-                  label="End Date"
-                  formControlName="endDate"
                   [min]="campaignForm.get('startDate')?.value || today()"
-                  presentation="date"
                   class="wp-100"
+                  formControlName="endDate"
+                  label="End Date"
+                  presentation="date"
                 />
               </div>
 
@@ -94,9 +94,9 @@
           </div>
 
           <app-button
+            [disabled]="campaignForm.invalid"
             [label]="isEditMode() ? 'Update Campaign' : 'Create Campaign'"
             [loading]="isLoading()"
-            [disabled]="campaignForm.invalid"
             type="submit"
           />
         </form>
@@ -144,7 +144,6 @@
       </ion-header>
       <ion-content class="ion-padding">
         <div class="ion-flex-column gap-24">
-          <!-- Campaign Info -->
           <div class="ion-flex-column gap-8">
             <ion-text color="medium">Campaign Information</ion-text>
 
@@ -187,9 +186,7 @@
                   </div>
                   <div class="ion-flex-row ion-justify-content-between">
                     <span>Status</span>
-                    <ion-chip color="primary">
-                      {{ campaign.status | titlecase }}
-                    </ion-chip>
+                    <ion-chip color="primary"> {{ campaign.status | titlecase }} </ion-chip>
                   </div>
                   <div class="ion-flex-row ion-justify-content-between">
                     <span>Accepted Influencers</span>
@@ -217,43 +214,31 @@
                     <div class="ion-flex-row ion-justify-content-between ion-align-items-start gap-16">
                       <div class="ion-flex-column gap-4 flex-1">
                         <ion-text>
-                          <strong>
-                            {{ profile.firstName + ' ' + profile.lastName }}
-                          </strong>
+                          <strong> {{ profile.firstName + ' ' + profile.lastName }} </strong>
                         </ion-text>
 
-                        <ion-text color="medium">
-                          {{ profile.bio }}
-                        </ion-text>
+                        <ion-text color="medium"> {{ profile.bio }} </ion-text>
 
                         <div class="ion-flex-row gap-12 ion-margin-top">
                           @if (profile.instagram) {
                             <div class="ion-flex-row gap-4 ion-align-items-center">
                               <ion-icon name="logo-instagram"></ion-icon>
 
-                              <ion-text color="medium">
-                                {{ profile.instagram.followers }}
-                              </ion-text>
+                              <ion-text color="medium"> {{ profile.instagram.followers }} </ion-text>
                             </div>
                           }
-
                           @if (profile.twitter) {
                             <div class="ion-flex-row gap-4 ion-align-items-center">
                               <ion-icon name="logo-twitter"></ion-icon>
 
-                              <ion-text color="medium">
-                                {{ profile.twitter.followers }}
-                              </ion-text>
+                              <ion-text color="medium"> {{ profile.twitter.followers }} </ion-text>
                             </div>
                           }
-
                           @if (profile.youtube) {
                             <div class="ion-flex-row gap-4 ion-align-items-center">
                               <ion-icon name="logo-youtube"></ion-icon>
 
-                              <ion-text color="medium">
-                                {{ profile.youtube.followers }}
-                              </ion-text>
+                              <ion-text color="medium"> {{ profile.youtube.followers }} </ion-text>
                             </div>
                           }
                         </div>

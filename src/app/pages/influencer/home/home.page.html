@@ -1,13 +1,28 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>home</ion-title>
+    <ion-title>Home</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">home</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content />
+  </ion-refresher>
+
+  @if (isLoading()) {
+    <app-profile-card-skeleton />
+    <app-insights-card-skeleton />
+    <app-recommended-campaigns-skeleton />
+    <app-applications-card-skeleton />
+  } @else if (home(); as home) {
+    <div class="ion-flex-column gap-20">
+      <influencer-profile-card [profile]="home.profile" />
+
+      <app-insights-card [insights]="home.insights" />
+
+      <app-recommended-campaigns [campaigns]="home.recommendedCampaigns" />
+
+      <app-applications-card [applications]="home.myApplications" />
+    </div>
+  }
 </ion-content>
