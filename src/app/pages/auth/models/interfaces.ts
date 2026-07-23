@@ -19,7 +19,6 @@ export interface CreatePassword {
 export interface Login {
   email: string;
   password: string;
-  role: UserRole;
 }
 
 export interface User {

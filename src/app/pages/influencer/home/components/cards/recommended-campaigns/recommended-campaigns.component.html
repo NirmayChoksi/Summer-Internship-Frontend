@@ -30,7 +30,7 @@
           {{ campaign.description }}
         </p>
 
-        <div class="mt-4 info-row">
+        <div class="mt-4 mb-4 info-row">
           <div>
             <ion-icon color="success" name="cash-outline"> </ion-icon>
 
@@ -44,13 +44,7 @@
           </div>
         </div>
 
-        <app-button
-          expand="block"
-          class="mt-4"
-          (click)="apply(campaign._id)"
-          label="Apply"
-          iconEnd="arrow-forward-outline"
-        >
+        <app-button expand="block" (click)="apply(campaign._id)" label="Apply" iconEnd="arrow-forward-outline">
         </app-button>
       </ion-card-content>
     </ion-card>

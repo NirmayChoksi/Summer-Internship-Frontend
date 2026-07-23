@@ -1,8 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      {{ isEditMode() ? 'Edit Profile' : 'Create Profile' }}
-    </ion-title>
+    <ion-title> {{ isEditMode() ? 'Edit Profile' : 'Create Profile' }} </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -12,7 +10,7 @@
       <ion-label color="medium"> Company Information </ion-label>
       <app-file-upload
         label="Upload company logo"
-        [accept]="['.png', '.jpg', '.jpeg']"
+        [accept]="['.png', '.jpg', '.jpeg','.webp']"
         [fileUrl]="companyLogoUrl()"
         (filesChange)="onCompanyLogoUpload($event)"
         (urlRemoved)="onCompanyLogoRemoved($event)"
@@ -32,10 +30,10 @@
       </div>
 
       @if (profileForm.get('budget')?.errors?.['invalidBudget'] && profileForm.get('budget')?.touched) {
-        <ion-note color="danger" class="fs-12 ion-flex-row gap-5 ion-align-items-center">
-          <ion-icon name="alert-circle-outline" class="fs-14" />
-          Maximum budget must be greater than minimum budget
-        </ion-note>
+      <ion-note color="danger" class="fs-12 ion-flex-row gap-5 ion-align-items-center">
+        <ion-icon name="alert-circle-outline" class="fs-14" />
+        Maximum budget must be greater than minimum budget
+      </ion-note>
       }
     </div>
 

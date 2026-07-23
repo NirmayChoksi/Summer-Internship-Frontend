@@ -9,15 +9,11 @@
         @for (application of applications(); track application._id) {
           <ion-item button detail="false" (click)="open(application)">
             <ion-label>
-              <h2>
-                {{ application.title }}
-              </h2>
+              <h2>{{ application.title }}</h2>
 
               <p>
                 ₹{{ application.payout | number }}
-
                 • Ends
-
                 {{ application.endDate | date: 'dd MMM' }}
               </p>
             </ion-label>
@@ -36,7 +32,7 @@
 
         <h3 class="mt-3">No Applications Yet</h3>
 
-        <p class="text-medium w-75">Start applying to campaigns to track your progress here.</p>
+        <p class="text-medium">Start applying to campaigns to track your progress here.</p>
       </div>
     }
   </ion-card-content>

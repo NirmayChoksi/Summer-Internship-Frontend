@@ -12,10 +12,6 @@ import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/stan
 import { finalize } from 'rxjs';
 import { ButtonComponent } from 'src/app/shared/components/form-inputs/button/button.component';
 import { InputComponent } from 'src/app/shared/components/form-inputs/input/input.component';
-import {
-  SelectComponent,
-  SelectOption,
-} from 'src/app/shared/components/form-inputs/select/select.component';
 import { UserRole } from '../models/enums';
 import { Auth } from '../services/auth';
 
@@ -36,7 +32,6 @@ import { Auth } from '../services/auth';
     IonToolbar,
     ReactiveFormsModule,
     RouterLink,
-    SelectComponent,
   ],
 })
 export class LoginPage implements OnInit {
@@ -46,9 +41,6 @@ export class LoginPage implements OnInit {
 
   isLoading = signal<boolean>(false);
   loginForm!: FormGroup;
-  roleOptions: SelectOption[] = Object.entries(UserRole).map(([key, value]) => {
-    return { label: key, value };
-  });
 
   constructor() {}
 
@@ -67,7 +59,6 @@ export class LoginPage implements OnInit {
           Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@$!%*?&]).+$/),
         ],
       ],
-      role: [UserRole.Brand, [Validators.required]],
     });
   }
 
